@@ -1,16 +1,26 @@
-import { useState } from "react";
+"use client";
+import { useEffect, useState } from "react";
 
 import Box from "@mui/material/Box";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import Button from "@mui/material/Button";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import { signOut } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
-const settings = ["Profile", "Account", "Dashboard", "Logout"];
+const settings = ["Profile", "Account", "Dashboard"];
 
-export default function UserMenu() {
+export default function UserMenu({ username }: { username: string }) {
   const [element, setElement] = useState<null | HTMLElement>(null);
   const open = Boolean(element);
+  const router = useRouter();
+
+  useEffect(() => {
+    if (username === "user") {
+      router.replace("/");
+    }
+  }, [username, router]);
 
   const handleOpenMenu = (event: React.MouseEvent<HTMLButtonElement>) => {
     setElement(event.currentTarget);
@@ -34,7 +44,7 @@ export default function UserMenu() {
         }}
         endIcon={<AccountCircleIcon />}
       >
-        Hi, user
+        Hi, {username}
       </Button>
       <Menu
         open={open}
@@ -54,6 +64,14 @@ export default function UserMenu() {
             {setting}
           </MenuItem>
         ))}
+        <MenuItem
+          onClick={() => {
+            signOut();
+            handleCloseMenu();
+          }}
+        >
+          Log out
+        </MenuItem>
       </Menu>
     </Box>
   );

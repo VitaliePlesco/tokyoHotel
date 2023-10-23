@@ -1,13 +1,11 @@
 import HeroImage from "@/components/layout/HeroImage";
 import Container from "@mui/material/Container";
 
-export default function Home() {
+export default function page() {
   return (
-    <main style={{ flex: 1 }}>
+    <div style={{ flex: 1 }}>
       <HeroImage url="/images/wide.jpg" height={600} />
-      <Container maxWidth="lg">
-        <h1>Stuff goes here</h1>
-      </Container>
-    </main>
+      <Container>hotels</Container>
+    </div>
   );
 }

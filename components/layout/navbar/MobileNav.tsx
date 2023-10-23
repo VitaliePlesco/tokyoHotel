@@ -1,12 +1,12 @@
+"use client";
 import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
 import CloseIcon from "@mui/icons-material/Close";
 
 import Box from "@mui/material/Box";
 import Drawer from "@mui/material/Drawer";
-import MenuItem from "@mui/material/MenuItem";
+
 import List from "@mui/material/List";
-import Typography from "@mui/material/Typography";
 import ListItem from "@mui/material/ListItem";
 import { useState } from "react";
 
