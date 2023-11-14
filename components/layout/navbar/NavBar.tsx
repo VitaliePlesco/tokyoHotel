@@ -18,7 +18,7 @@ export default async function NavBar() {
   const name =
     session?.user?.email?.slice(0, session?.user?.email?.indexOf("@")) ??
     "user";
-  console.log(session);
+  // console.log(session);
   return (
     <AppBar position="static">
       <Container maxWidth="lg">
