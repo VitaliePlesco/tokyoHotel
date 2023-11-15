@@ -2,6 +2,7 @@ import HeroImage from "@/components/layout/HeroImage";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import Box from "@mui/material/Box";
+import ChangePasswordForm from "@/components/forms/ChangePasswordForm";
 
 export default function ChangePasswordPage() {
   return (
@@ -31,7 +32,7 @@ export default function ChangePasswordPage() {
             filter: `drop-shadow(1px 1px 6px #888888)`,
           }}
         >
-          Change password form
+          <ChangePasswordForm />
         </Box>
       </Container>
     </main>
