@@ -2,9 +2,29 @@ import HeroImage from "@/components/layout/HeroImage";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import Box from "@mui/material/Box";
+
+import { db } from "@/lib/db";
+import { redirect } from "next/navigation";
+
 import ChangePasswordForm from "@/components/forms/ChangePasswordForm";
 
-export default function ChangePasswordPage() {
+type ChangePasswordPageProps = {
+  searchParams: { [key: string]: string | string[] | undefined };
+};
+
+export default async function ChangePasswordPage({
+  searchParams,
+}: ChangePasswordPageProps) {
+  if (searchParams.token) {
+    const user = await db.user.findUnique({
+      where: {
+        resetPasswordToken: searchParams.token as string,
+      },
+    });
+    if (!user) {
+      redirect("/auth/forgotpassword");
+    }
+  }
   return (
     <main style={{ flex: 1 }}>
       <HeroImage height={400} url="/images/wide.jpg">
@@ -32,7 +52,9 @@ export default function ChangePasswordPage() {
             filter: `drop-shadow(1px 1px 6px #888888)`,
           }}
         >
-          <ChangePasswordForm />
+          <ChangePasswordForm
+            resetPasswordToken={searchParams.token as string}
+          />
         </Box>
       </Container>
     </main>

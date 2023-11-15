@@ -15,7 +15,13 @@ import { changePasswordSchema } from "@/lib/validations/auth";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
-export default function ChangePasswordForm() {
+type ChangePasswordFormProps = {
+  resetPasswordToken: string;
+};
+
+export default function ChangePasswordForm({
+  resetPasswordToken,
+}: ChangePasswordFormProps) {
   const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
   const {
@@ -30,20 +36,20 @@ export default function ChangePasswordForm() {
   const handleClickShowPassword = () => setShowPassword((show) => !show);
 
   const onSubmit = async (data: any) => {
-    const response = await fetch("/api/register", {
+    const response = await fetch("/api/change-password", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        email: data.email,
         password: data.password,
+        resetPasswordToken: resetPasswordToken,
       }),
     });
 
     if (response.ok) {
       reset();
-      router.push("/signin");
+      router.push("/auth/signin");
     }
   };
   return (

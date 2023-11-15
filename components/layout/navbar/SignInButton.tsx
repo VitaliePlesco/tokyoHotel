@@ -3,7 +3,7 @@ import Button from "@mui/material/Button";
 export default function SignInButton() {
   return (
     <Button
-      href="/signin"
+      href="/auth/signin"
       variant="outlined"
       color="inherit"
       sx={{

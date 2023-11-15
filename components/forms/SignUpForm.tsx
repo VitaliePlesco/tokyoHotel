@@ -48,7 +48,7 @@ export default function SignUpForm() {
 
     if (response.ok) {
       reset();
-      router.push("/signin");
+      router.push("/auth/signin");
     }
   };
   return (

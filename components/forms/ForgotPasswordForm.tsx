@@ -9,9 +9,6 @@ import { TEmailSchema, emailSchema } from "@/lib/validations/auth";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 
-// import { render } from "@react-email/render";
-// import { PasswordResetEmailTemplate } from "@/utils/email-templates/PasswordResetEmailTemplate";
-
 import { useRouter } from "next/navigation";
 
 export default function ForgotPasswordForm() {
@@ -33,9 +30,6 @@ export default function ForgotPasswordForm() {
       },
       body: JSON.stringify({
         email: data.email,
-        // message: render(
-        //   <PasswordResetEmailTemplate email={data.email} token="12345" />
-        // ),
       }),
     });
     if (response.ok) {

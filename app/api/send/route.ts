@@ -40,7 +40,7 @@ export async function POST(req: Request) {
   const message = `
 
       <h2>Password reset for ${email}</h2>
-      <a href="http://localhost:3000/changepassword?token=${resetPasswordToken}">Click here to reset your password</a>`;
+      <a href="http://localhost:3000/auth/changepassword?token=${resetPasswordToken}">Click here to reset your password</a>`;
 
   try {
     await sendEmail({

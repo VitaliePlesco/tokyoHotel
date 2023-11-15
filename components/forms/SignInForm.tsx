@@ -108,7 +108,7 @@ export default function SignInForm() {
             helperText={errors.password ? `${errors.password.message}` : " "}
           />
 
-          <Link href="/forgot-password">Forgot your password?</Link>
+          <Link href="/auth/forgotpassword">Forgot your password?</Link>
 
           <Button
             disabled={isSubmitting}
