@@ -122,8 +122,8 @@ export default function SignInForm() {
             Sign in
           </Button>
           <Typography>
-            Don&apos;t have an account?
-            <Link href={"/signup"}>Sign Up Now</Link>
+            Don&apos;t have an account?{" "}
+            <Link href={"/auth/signup"}>Sign Up Now</Link>
           </Typography>
         </Stack>
       </Box>
