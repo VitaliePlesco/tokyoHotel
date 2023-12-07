@@ -1,9 +1,6 @@
 import "./globals.css";
 import type { Metadata } from "next";
 
-import NavBar from "@/components/layout/navbar/NavBar";
-import Footer from "@/components/layout/footer/Footer";
-
 import ThemeRegistry from "@/utils/muiTheme/ThemeRegistry";
 
 export const metadata: Metadata = {
@@ -26,9 +23,7 @@ export default function RootLayout({
             flexDirection: "column",
           }}
         >
-          <NavBar />
           {children}
-          <Footer />
         </body>
       </ThemeRegistry>
     </html>
