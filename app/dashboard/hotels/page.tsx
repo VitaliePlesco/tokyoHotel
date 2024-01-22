@@ -1,3 +1,5 @@
+import { CreateHotel } from "@/components/hotels/buttons";
+
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 
@@ -8,12 +10,13 @@ export default function page() {
         sx={{
           padding: {
             xs: "1rem",
-            md: "1.5rem",
+            md: "1.45rem",
           },
         }}
       >
-        <Typography variant="h4">Dashboard</Typography>
+        <Typography variant="h4">Hotels</Typography>
       </Box>
+      <CreateHotel />
     </Box>
   );
 }
