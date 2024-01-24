@@ -11,10 +11,88 @@ datasource db {
 }
 
 model User {
-  id                       String    @id @default(cuid())
-  email                    String    @unique
-  password                 String
-  resetPasswordToken       String?   @unique
-  resetPasswordTokenExpire DateTime?
-  booking                  DateTime  @default(now())
+  id            String          @id @default(cuid())
+  email         String          @unique
+  password      String
+  role          Role            @default(USER)
+  ResetPassword ResetPassword[]
+  Booking       Booking[]
+}
+
+enum Role {
+  USER
+  ADMIN
+}
+
+model ResetPassword {
+  id                       Int      @id @default(autoincrement())
+  resetPasswordToken       String   @unique
+  resetPasswordTokenExpire DateTime
+  user                     User     @relation(fields: [userId], references: [id])
+  userId                   String
+}
+
+model Hotel {
+  hotelName      String @id
+  city           String
+  buildingNumber Int
+  streetName     String
+  email          String
+  phoneNumber    Int
+  Room           Room[]
+}
+
+model Room {
+  roomNumber Int        @id @default(autoincrement())
+  roomStatus RoomStatus @default(VACANT)
+  roomType   RoomType   @relation(fields: [roomTypeId], references: [id])
+  hotel      Hotel      @relation(fields: [hotelId], references: [hotelName])
+  hotelId    String
+  roomTypeId Int
+  Booking    Booking[]
+}
+
+model RoomType {
+  id           Int          @id @default(autoincrement())
+  roomTypeName RoomTypeName
+  roomPrice    Decimal      @db.Money
+  Room         Room[]
+}
+
+enum RoomTypeName {
+  DOUBLE
+  TWIN
+}
+
+enum RoomStatus {
+  OCCUPIED
+  VACANT
+  BOOKED
+}
+
+model Booking {
+  id          String   @id @default(cuid())
+  bookingDate DateTime
+  startDate   DateTime @db.Date
+  endDate     DateTime @db.Date
+  user        User     @relation(fields: [userId], references: [id])
+  userId      String
+  room        Room     @relation(fields: [roomNumber], references: [roomNumber])
+  roomNumber  Int
+  payment     Payment?
+}
+
+model Payment {
+  id            Int           @id @default(autoincrement())
+  paymentDate   DateTime
+  totalAmount   Decimal       @db.Money
+  paymentStatus PaymentStatus @default(NOTPAID)
+  booking       Booking       @relation(fields: [bookingId], references: [id])
+  bookingId     String        @unique
+}
+
+enum PaymentStatus {
+  PAID
+  NOTPAID
+  PENDING
 }
