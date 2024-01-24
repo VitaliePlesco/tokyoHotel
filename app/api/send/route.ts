@@ -27,13 +27,12 @@ export async function POST(req: Request) {
   const today = new Date();
   const expiryDate = new Date(today.setDate(today.getDate() + 1));
 
-  await db.user.update({
-    where: {
-      id: user.id
-    },
+  await db.resetPassword.create({
+
     data: {
       resetPasswordToken: resetPasswordToken,
-      resetPasswordTokenExpire: expiryDate
+      resetPasswordTokenExpire: expiryDate,
+      userId: user.id
     }
   })
 

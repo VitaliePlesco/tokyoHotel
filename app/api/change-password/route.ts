@@ -6,20 +6,18 @@ export async function POST(req: Request) {
   const body = await req.json();
   const { password, resetPasswordToken } = body;
 
-  const user = await db.user.findUnique({
+  const resetToken = await db.resetPassword.findUnique({
     where: {
       resetPasswordToken: resetPasswordToken,
     }
   });
 
-  if (!user) {
+  if (!resetToken) {
     return NextResponse.json({ token: null, message: "Reset password token invalid" })
   }
 
-  const resetPasswordTokenExpire = user.resetPasswordTokenExpire;
-  if (!resetPasswordTokenExpire) {
-    return NextResponse.json({ message: "Token expired" });
-  }
+  const resetPasswordTokenExpire = resetToken.resetPasswordTokenExpire;
+
 
   const today = new Date();
 
@@ -31,12 +29,11 @@ export async function POST(req: Request) {
 
   await db.user.update({
     where: {
-      id: user.id
+      id: resetToken.userId
     },
     data: {
       password: hashedPassword,
-      resetPasswordToken: null,
-      resetPasswordTokenExpire: null,
+
     }
   })
   return NextResponse.json({ message: "Password change succesfully" })

@@ -16,9 +16,14 @@ export default async function ChangePasswordPage({
   searchParams,
 }: ChangePasswordPageProps) {
   if (searchParams.token) {
-    const user = await db.user.findUnique({
+    const resetToken = await db.resetPassword.findUnique({
       where: {
         resetPasswordToken: searchParams.token as string,
+      },
+    });
+    const user = await db.user.findUnique({
+      where: {
+        id: resetToken?.userId,
       },
     });
     if (!user) {
