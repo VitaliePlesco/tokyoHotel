@@ -1,11 +1,23 @@
+"use client";
 import Box from "@mui/material/Box";
 import Stack from "@mui/material/Stack";
 import TextField from "@mui/material/TextField";
 
+import { createHotel } from "@/lib/actions";
+import { Button } from "./buttons";
+
+import { hotelSchema, ThotelSchema } from "@/lib/validations/hotelSchema";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 export default function CreateForm() {
+  const {
+    register,
+    formState: { errors, isSubmitting },
+    reset,
+  } = useForm<ThotelSchema>({
+    resolver: zodResolver(hotelSchema),
+  });
   return (
     <Box
       sx={{
@@ -21,63 +33,64 @@ export default function CreateForm() {
         },
       }}
     >
-      <Box component="form">
+      <Box component="form" action={createHotel}>
         <Stack spacing={4}>
           <TextField
-            // error={errors.email ? true : false}
             type="text"
             label="Hotel name"
-            // {...register("email")}
+            {...register("name")}
             variant="outlined"
             sx={{ bgcolor: "white" }}
-            // helperText={errors.email ? `${errors.email.message}` : " "}
           />
           <TextField
-            // error={errors.email ? true : false}
+            error={errors.city ? true : false}
             type="text"
             label="City"
-            // {...register("email")}
+            {...register("city")}
             variant="outlined"
             sx={{ bgcolor: "white" }}
-            // helperText={errors.email ? `${errors.email.message}` : " "}
           />
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: {
+                xs: "column",
+                md: "row",
+              },
+              gap: "2rem",
+            }}
+          >
+            <TextField
+              type="text"
+              label="Number"
+              {...register("strNo")}
+              variant="outlined"
+              sx={{ bgcolor: "white", width: "100%" }}
+            />
+            <TextField
+              type="text"
+              label="Street Address"
+              {...register("street")}
+              variant="outlined"
+              sx={{ bgcolor: "white", width: "100%" }}
+            />
+          </Box>
           <TextField
-            // error={errors.email ? true : false}
-            type="text"
-            label="Street Address"
-            // {...register("email")}
-            variant="outlined"
-            sx={{ bgcolor: "white" }}
-            // helperText={errors.email ? `${errors.email.message}` : " "}
-          />
-          <TextField
-            // error={errors.email ? true : false}
             type="email"
             label="Email"
-            // {...register("email")}
+            {...register("email")}
             variant="outlined"
             sx={{ bgcolor: "white" }}
-            // helperText={errors.email ? `${errors.email.message}` : " "}
           />
           <TextField
-            // error={errors.email ? true : false}
-            type="Text"
+            type="tel"
             label="Phone number"
-            // {...register("email")}
+            {...register("phoneNumber")}
             variant="outlined"
             sx={{ bgcolor: "white" }}
-            // helperText={errors.email ? `${errors.email.message}` : " "}
-          />
-          <TextField
-            // error={errors.email ? true : false}
-            type="number"
-            label="Number of rooms"
-            // {...register("email")}
-            variant="outlined"
-            sx={{ bgcolor: "white" }}
-            // helperText={errors.email ? `${errors.email.message}` : " "}
           />
         </Stack>
+        <button type="submit">Add</button>
       </Box>
     </Box>
   );

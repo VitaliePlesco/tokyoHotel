@@ -1,14 +1,22 @@
 import Link from "next/link";
 
 import Box from "@mui/material/Box";
+import ModeEditOutlineSharpIcon from "@mui/icons-material/ModeEditOutlineSharp";
+import DeleteOutlineSharpIcon from "@mui/icons-material/DeleteOutlineSharp";
 import Typography from "@mui/material/Typography";
-import AddIcon from "@mui/icons-material/Add";
+import React from "react";
 
-export function CreateHotel() {
+type ButtonProps = {
+  Icon?: React.ReactElement;
+  name: string;
+  link: string;
+};
+
+export function Button({ Icon, name, link }: ButtonProps) {
   return (
     <Box
       component={Link}
-      href="/dashboard/hotels/create"
+      href={link}
       sx={{
         display: "flex",
         alignItems: "center",
@@ -40,10 +48,59 @@ export function CreateHotel() {
           },
         }}
       >
-        Create Hotel
+        {name}
       </Typography>
       {"   "}
-      <AddIcon fontSize="medium" />
+      {Icon}
+    </Box>
+  );
+}
+
+export function UpdateHotel({ id }: { id: string }) {
+  return (
+    <Box
+      component={Link}
+      href={`/dashboard/hotels/${id}/edit`}
+      sx={{
+        border: "1px solid #d1d5db",
+        borderRadius: "0.375rem",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        px: "0.75rem",
+        py: "0.75rem",
+        ":hover": {
+          backgroundColor: "#e5e7eb",
+        },
+        color: "black",
+      }}
+    >
+      <ModeEditOutlineSharpIcon />
+    </Box>
+  );
+}
+
+export function DeleteHotel({ id }: { id: string }) {
+  return (
+    <Box component={"form"}>
+      <Box
+        component={"button"}
+        sx={{
+          border: "1px solid #d1d5db",
+          borderRadius: "0.375rem",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          px: "0.75rem",
+          py: "0.75rem",
+          backgroundColor: "white",
+          ":hover": {
+            backgroundColor: "#e5e7eb",
+          },
+        }}
+      >
+        <DeleteOutlineSharpIcon />
+      </Box>
     </Box>
   );
 }
