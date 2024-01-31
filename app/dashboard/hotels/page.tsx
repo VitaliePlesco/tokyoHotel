@@ -1,5 +1,5 @@
 import { Suspense } from "react";
-import { Button } from "@/components/hotels/buttons";
+import { ButtonLink } from "@/components/hotels/buttons";
 import HotelsTable from "@/components/hotels/table";
 import { HotelsTableSkeleton } from "@/components/skeletons";
 
@@ -23,17 +23,16 @@ export default function page() {
       </Box>
       <Box
         sx={{
+          display: "flex",
           padding: {
             xs: "1rem",
             md: "1.45rem",
           },
         }}
       >
-        <Button
-          name="Create Hotel"
-          Icon={<AddIcon />}
-          link="/dashboard/hotels/create"
-        />
+        <ButtonLink Icon={<AddIcon />} link="/dashboard/hotels/create">
+          Create Hotel
+        </ButtonLink>
       </Box>
       <Box
         sx={{

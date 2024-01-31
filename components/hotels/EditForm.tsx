@@ -3,14 +3,15 @@ import Box from "@mui/material/Box";
 import Stack from "@mui/material/Stack";
 import TextField from "@mui/material/TextField";
 
-import { createHotel } from "@/lib/actions";
+import { updateHotel } from "@/lib/actions";
 import { CancelButton, Button } from "./buttons";
 
 import { hotelSchema, ThotelSchema } from "@/lib/validations/hotelSchema";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { Hotel } from "@prisma/client";
 
-export default function CreateForm() {
+export default function EditForm({ hotel }: { hotel: Hotel }) {
   const {
     register,
     formState: { errors, isSubmitting },
@@ -18,6 +19,7 @@ export default function CreateForm() {
   } = useForm<ThotelSchema>({
     resolver: zodResolver(hotelSchema),
   });
+  const updateHotelWithId = updateHotel.bind(null, hotel.hotelName);
   return (
     <Box
       sx={{
@@ -38,7 +40,7 @@ export default function CreateForm() {
           },
         }}
       >
-        <Box component="form" action={createHotel}>
+        <Box component="form" action={updateHotelWithId}>
           <Stack spacing={4}>
             <TextField
               type="text"
@@ -46,11 +48,13 @@ export default function CreateForm() {
               {...register("hotelName")}
               variant="outlined"
               sx={{ bgcolor: "white" }}
+              defaultValue={hotel.hotelName}
             />
             <TextField
               error={errors.city ? true : false}
               type="text"
               label="City"
+              defaultValue={hotel.city}
               {...register("city")}
               variant="outlined"
               sx={{ bgcolor: "white" }}
@@ -68,6 +72,7 @@ export default function CreateForm() {
               <TextField
                 type="text"
                 label="Number"
+                defaultValue={hotel.buildingNumber}
                 {...register("buildingNumber")}
                 variant="outlined"
                 sx={{ bgcolor: "white", width: "100%" }}
@@ -75,6 +80,7 @@ export default function CreateForm() {
               <TextField
                 type="text"
                 label="Street Address"
+                defaultValue={hotel.streetName}
                 {...register("streetName")}
                 variant="outlined"
                 sx={{ bgcolor: "white", width: "100%" }}
@@ -83,6 +89,7 @@ export default function CreateForm() {
             <TextField
               type="email"
               label="Email"
+              defaultValue={hotel.email}
               {...register("email")}
               variant="outlined"
               sx={{ bgcolor: "white" }}
@@ -90,6 +97,7 @@ export default function CreateForm() {
             <TextField
               type="tel"
               label="Phone number"
+              defaultValue={hotel.phoneNumber}
               {...register("phoneNumber")}
               variant="outlined"
               sx={{ bgcolor: "white" }}

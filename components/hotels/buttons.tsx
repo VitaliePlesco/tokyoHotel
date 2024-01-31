@@ -5,14 +5,15 @@ import ModeEditOutlineSharpIcon from "@mui/icons-material/ModeEditOutlineSharp";
 import DeleteOutlineSharpIcon from "@mui/icons-material/DeleteOutlineSharp";
 import Typography from "@mui/material/Typography";
 import React from "react";
+import { deleteHotel } from "@/lib/actions";
 
 type ButtonProps = {
   Icon?: React.ReactElement;
-  name: string;
+  children: React.ReactNode;
   link: string;
 };
 
-export function Button({ Icon, name, link }: ButtonProps) {
+export function ButtonLink({ Icon, children, link }: ButtonProps) {
   return (
     <Box
       component={Link}
@@ -21,7 +22,6 @@ export function Button({ Icon, name, link }: ButtonProps) {
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        width: "12em",
         borderRadius: "0.5rem",
         textDecoration: "none",
         bgcolor: "primary.main",
@@ -30,7 +30,8 @@ export function Button({ Icon, name, link }: ButtonProps) {
           bgcolor: "primary.dark",
           color: "white",
         },
-        p: "0.75em",
+        py: "0.75em",
+        px: "1em",
         fontSize: "0.875rem",
         fontWeight: "500",
         ":focus-visible": {
@@ -48,10 +49,71 @@ export function Button({ Icon, name, link }: ButtonProps) {
           },
         }}
       >
-        {name}
+        {children}
       </Typography>
       {"   "}
       {Icon}
+    </Box>
+  );
+}
+export function Button({ children }: { children: React.ReactNode }) {
+  return (
+    <Box
+      component={"button"}
+      type="submit"
+      sx={{
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        boxShadow: "none",
+        border: "none",
+        borderRadius: "0.5rem",
+        bgcolor: "primary.main",
+        color: "white",
+        "&:hover": {
+          bgcolor: "primary.dark",
+          color: "white",
+        },
+        py: "0.75em",
+        px: "1em",
+        fontSize: "0.875rem",
+        fontWeight: "500",
+        ":focus-visible": {
+          outline: "2px solid #2563eb",
+          borderRadius: "0.5rem",
+        },
+      }}
+    >
+      <Typography component="span">{children}</Typography>
+    </Box>
+  );
+}
+export function CancelButton({ link }: { link: string }) {
+  return (
+    <Box
+      component={Link}
+      href={link}
+      sx={{
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        borderRadius: "0.5rem",
+        textDecoration: "none",
+        backgroundColor: "#f3f4f6",
+        ":hover": {
+          backgroundColor: "#e5e7eb",
+        },
+        py: "0.75em",
+        px: "1em",
+        fontSize: "0.875rem",
+        fontWeight: "500",
+        ":focus-visible": {
+          outline: "2px solid #2563eb",
+          borderRadius: "0.5rem",
+        },
+      }}
+    >
+      <Typography component="span">Cancel</Typography>
     </Box>
   );
 }
@@ -81,8 +143,9 @@ export function UpdateHotel({ id }: { id: string }) {
 }
 
 export function DeleteHotel({ id }: { id: string }) {
+  const deleteHotelWithId = deleteHotel.bind(null, id);
   return (
-    <Box component={"form"}>
+    <Box component={"form"} action={deleteHotelWithId}>
       <Box
         component={"button"}
         sx={{

@@ -11,7 +11,7 @@ import Typography from "@mui/material/Typography";
 import { UpdateHotel, DeleteHotel } from "./buttons";
 
 import { fetchHotels } from "@/lib/data";
-import { Hotel } from "@prisma/client";
+import type { Hotel } from "@prisma/client";
 
 export default async function HotelsTable() {
   const hotels: Hotel[] = await fetchHotels();
@@ -88,8 +88,8 @@ export default async function HotelsTable() {
                       gap: "1.5rem",
                     }}
                   >
-                    <UpdateHotel id="hhh" />
-                    <DeleteHotel id="jjj" />
+                    <UpdateHotel id={hotel.hotelName} />
+                    <DeleteHotel id={hotel.hotelName} />
                   </Box>
                 </TableCell>
               </TableRow>
