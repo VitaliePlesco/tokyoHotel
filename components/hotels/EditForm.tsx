@@ -22,6 +22,8 @@ export default function EditForm({ hotel }: { hotel: Hotel }) {
   const updateHotelWithId = updateHotel.bind(null, hotel.hotelName);
   return (
     <Box
+      component="form"
+      action={updateHotelWithId}
       sx={{
         margin: {
           xs: "1rem",
@@ -40,7 +42,7 @@ export default function EditForm({ hotel }: { hotel: Hotel }) {
           },
         }}
       >
-        <Box component="form" action={updateHotelWithId}>
+        <Box>
           <Stack spacing={4}>
             <TextField
               type="text"

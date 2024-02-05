@@ -20,6 +20,8 @@ export default function CreateForm() {
   });
   return (
     <Box
+      component="form"
+      action={createHotel}
       sx={{
         margin: {
           xs: "1rem",
@@ -38,7 +40,7 @@ export default function CreateForm() {
           },
         }}
       >
-        <Box component="form" action={createHotel}>
+        <Box>
           <Stack spacing={4}>
             <TextField
               type="text"
