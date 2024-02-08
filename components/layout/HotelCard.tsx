@@ -1,16 +1,60 @@
 import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
 import CardMedia from "@mui/material/CardMedia";
+import Typography from "@mui/material/Typography";
+import Link from "next/link";
 
-export default function HotelCard() {
+type HotelCardProps = {
+  title: string;
+  img?: string;
+};
+
+export default function HotelCard({ title, img }: HotelCardProps) {
   return (
-    <Card sx={{}}>
-      <CardMedia
-        component="img"
-        sx={{ width: "100%" }}
-        image="/images/tokyo/tokyo.jpg"
-        alt="Tokyo city street junction"
-      />
-    </Card>
+    <Box component={Link} href={`/hotels/${title}`}>
+      <Card sx={{ position: "relative", height: "240px" }}>
+        <Box
+          sx={{
+            position: "absolute",
+            bottom: "0",
+            height: "35%",
+            color: "white",
+            px: "1rem",
+            width: "100%",
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            backgroundImage:
+              "linear-gradient(to top, rgba(0,0,0,0.8) 0%,rgba(224,224,224,0.2) 100%)",
+          }}
+        >
+          <Typography
+            variant="h6"
+            sx={{
+              fontWeight: "bold",
+              letterSpacing: "0.5px",
+              lineHeight: "1.25",
+            }}
+          >
+            {title}
+          </Typography>
+          <Card sx={{ px: "1.25rem", textAlign: "center" }}>
+            <Typography variant="subtitle1">From</Typography>
+            <Typography
+              variant="h6"
+              sx={{ color: "primary.main", fontWeight: "bold" }}
+            >
+              £44.90
+            </Typography>
+          </Card>
+        </Box>
+        <CardMedia
+          component="img"
+          sx={{ width: "100%" }}
+          image={img}
+          alt="Tokyo city street junction"
+        />
+      </Card>
+    </Box>
   );
 }
