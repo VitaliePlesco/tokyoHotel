@@ -8,7 +8,8 @@ const poppins = Poppins({
 
 const theme = createTheme({
   typography: {
-    fontFamily: poppins.style.fontFamily
+
+    fontFamily: "inherit"
   }
 })
 
