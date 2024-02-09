@@ -1,8 +1,8 @@
 import Breadcrumbs from "@/components/dashboard/breadcrumbs";
 import EditForm from "@/components/hotels/EditForm";
 
+import { notFound } from "next/navigation";
 import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
 
 import { fetchHotelById } from "@/lib/data";
 
@@ -10,7 +10,7 @@ export default async function page({ params }: { params: { id: string } }) {
   const id = decodeURI(params.id);
   const hotel = await fetchHotelById(id);
   if (!hotel) {
-    return <div>not found</div>;
+    notFound();
   }
   return (
     <main>

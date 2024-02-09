@@ -1,10 +1,7 @@
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
-import Card from "@mui/material/Card";
-import CardMedia from "@mui/material/CardMedia";
-
-import Image from "next/image";
+import { notFound } from "next/navigation";
 
 import { fetchHotelById } from "@/lib/data";
 import { hotelInfo } from "@/lib/placeholder-data";
@@ -15,7 +12,7 @@ export default async function page({ params }: { params: { id: string } }) {
   const filteredHotel = hotelInfo.filter((hotel) => hotel.hotelName === id);
 
   if (!hotel) {
-    return <div>not found</div>;
+    notFound();
   }
   return (
     <Box sx={{ flex: 1, py: "2.5rem" }}>
