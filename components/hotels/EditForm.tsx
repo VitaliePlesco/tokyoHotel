@@ -6,7 +6,7 @@ import TextField from "@mui/material/TextField";
 import { updateHotel } from "@/lib/actions";
 import { CancelButton, Button } from "./buttons";
 
-import { hotelSchema, ThotelSchema } from "@/lib/validations/hotelSchema";
+import { hotelSchema, ThotelSchema } from "@/lib/validations/hotelSchemas";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Hotel } from "@prisma/client";

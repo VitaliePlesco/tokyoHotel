@@ -3,7 +3,8 @@ import { db } from "@/lib/db";
 import { z } from "zod";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
-import { hotelSchema } from "./validations/hotelSchema";
+import { hotelSchema, manageRoomsSchema } from "./validations/hotelSchemas";
+import { RoomType } from "@prisma/client";
 
 export async function createHotel(formData: FormData) {
   const { hotelName, city, buildingNumber, streetName, email, phoneNumber } = {
@@ -82,8 +83,6 @@ export async function updateHotel(id: string, formData: FormData) {
 }
 
 export async function deleteHotel(id: string) {
-
-
   try {
     await db.hotel.delete({
       where: {
@@ -96,4 +95,65 @@ export async function deleteHotel(id: string) {
       message: "Database error: Failed to delete hotel."
     }
   }
+}
+
+export type State = {
+  errors?: {
+    number?: string[],
+    type?: string[]
+  }
+  message?: string | null;
+}
+
+export async function addRooms(id: string, prevState: State, formData: FormData) {
+  const validateFields = manageRoomsSchema.safeParse({
+    number: parseInt(formData.get("number") as string),
+    type: formData.get("type")
+  });
+
+  if (!validateFields.success) {
+    return {
+      errors: validateFields.error.flatten().fieldErrors,
+      message: "Missing fields. Failed to add rooms."
+    };
+  }
+
+  const { number, type } = validateFields.data;
+
+  const roomCategories = await db.roomType.findMany();
+  const filteredCategory = roomCategories.filter(category => category.roomTypeName === type)
+
+  const rooms = []
+  for (let i = 0; i < number; i++) {
+    rooms.push({
+      roomTypeId: filteredCategory[0].id,
+      hotelId: id
+    })
+  }
+
+  try {
+    await db.room.createMany({
+      data: rooms
+    })
+  } catch (error) {
+    return {
+      message: "Failed to add rooms."
+    }
+  }
+
+}
+export async function addCategory(prevState: State, formData: FormData) {
+  const validateFields = manageRoomsSchema.safeParse({
+    type: formData.get("type"),
+    number: parseInt(formData.get("number") as string)
+  });
+
+  if (!validateFields.success) {
+    return {
+      errors: validateFields.error.flatten().fieldErrors,
+      message: "Missing fields. Failed to add rooms."
+    };
+  }
+
+  const { type, number } = validateFields.data;
 }

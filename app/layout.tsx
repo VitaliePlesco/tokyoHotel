@@ -20,7 +20,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" style={{ fontFamily: "inherit" }}>
+    <html lang="en">
       <ThemeRegistry>
         <body
           style={{

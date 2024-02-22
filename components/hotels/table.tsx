@@ -10,6 +10,8 @@ import Typography from "@mui/material/Typography";
 
 import { UpdateHotel, DeleteHotel } from "./buttons";
 
+import Link from "next/link";
+
 import { fetchHotels } from "@/lib/data";
 import type { Hotel } from "@prisma/client";
 
@@ -63,7 +65,20 @@ export default async function HotelsTable() {
                   sx={{ whiteSpace: "nowrap", px: "1.5rem", py: "1rem" }}
                 >
                   <Box sx={{ height: "1.5rem", borderRadius: "0.25rem" }}>
-                    <Typography variant="h6">{hotel.hotelName}</Typography>
+                    <Typography
+                      variant="h6"
+                      component={Link}
+                      href={`/dashboard/hotels/${hotel.hotelName}/hotel`}
+                      sx={{
+                        textDecoration: "none",
+                        color: "text.primary",
+                        "&:hover": {
+                          color: "primary.dark",
+                        },
+                      }}
+                    >
+                      {hotel.hotelName}
+                    </Typography>
                   </Box>
                 </TableCell>
                 <TableCell
