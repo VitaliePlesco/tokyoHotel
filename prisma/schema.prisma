@@ -53,15 +53,10 @@ model Room {
 }
 
 model RoomType {
-  id           Int          @id @default(autoincrement())
-  roomTypeName RoomTypeName
-  roomPrice    Decimal      @db.Money
+  id           Int     @id @default(autoincrement())
+  roomTypeName String  @unique
+  roomPrice    Decimal @db.Money
   Room         Room[]
-}
-
-enum RoomTypeName {
-  DOUBLE
-  TWIN
 }
 
 enum RoomStatus {
