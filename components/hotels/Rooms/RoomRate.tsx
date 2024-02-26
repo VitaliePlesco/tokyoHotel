@@ -3,23 +3,33 @@ import Stack from "@mui/material/Stack";
 import TextField from "@mui/material/TextField";
 import MenuItem from "@mui/material/MenuItem";
 import { Button } from "../buttons";
+// import type { RoomType } from "@/lib/definitions";
+import { RoomType } from "@prisma/client";
+import { useForm } from "react-hook-form";
 
-export default function RoomRate() {
+export default function RoomRate({ roomTypes }: { roomTypes: RoomType[] }) {
+  const { register } = useForm();
   return (
     <Box>
       <Stack spacing={4}>
         <TextField
           select
-          label="Select room category"
+          id="type"
+          defaultValue=""
+          {...register("type")}
+          label="Select room type"
+          required
           variant="outlined"
           sx={{ bgcolor: "white" }}
         >
-          <MenuItem disableRipple value={"DOUBLE"}>
-            Double
+          <MenuItem disableRipple disabled selected defaultValue="">
+            -- Please choose an option --
           </MenuItem>
-          <MenuItem disableRipple value={"TWIN"}>
-            Twin
-          </MenuItem>
+          {roomTypes.map((roomType) => (
+            <MenuItem disableRipple key={roomType.id}>
+              {roomType.roomTypeName}
+            </MenuItem>
+          ))}
         </TextField>
         <TextField
           type="text"

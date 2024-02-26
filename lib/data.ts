@@ -8,7 +8,6 @@ export async function fetchHotels() {
     const hotels = await db.hotel.findMany();
     return hotels;
   } catch (error) {
-    console.error("Database Error:", error);
     throw new Error("Failed to fetch the hotels.");
   }
 }
@@ -21,12 +20,19 @@ export async function fetchHotelById(id: string) {
         hotelName: id
       }
     })
-
-
     return hotel;
   } catch (error) {
     console.error("Database Error:", error);
     throw new Error("Failed to fetch hotel.")
   }
+}
 
+export async function fetchRoomTypes() {
+  noStore();
+  try {
+    const categories = await db.roomType.findMany();
+    return categories
+  } catch (error) {
+    throw new Error("Failed to fetch categories")
+  }
 }

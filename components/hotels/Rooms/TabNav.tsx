@@ -7,7 +7,8 @@ import TabPanel from "./TabPanel";
 import AddRoom from "./AddRoom";
 import AddCategory from "./AddCategory";
 import RoomRate from "./RoomRate";
-
+// import type { RoomType } from "@/lib/definitions";
+import { RoomType } from "@prisma/client";
 import { useState } from "react";
 
 function tabProps(index: number) {
@@ -17,7 +18,13 @@ function tabProps(index: number) {
   };
 }
 
-export default function TabNav({ id }: { id: string }) {
+export default function TabNav({
+  id,
+  roomTypes,
+}: {
+  id: string;
+  roomTypes: RoomType[];
+}) {
   const [value, setValue] = useState<number>(0);
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
@@ -38,13 +45,13 @@ export default function TabNav({ id }: { id: string }) {
         </Tabs>
       </Box>
       <TabPanel value={value} index={0}>
-        <AddRoom id={id} />
+        <AddRoom id={id} roomTypes={roomTypes} />
       </TabPanel>
       <TabPanel value={value} index={1}>
         <AddCategory />
       </TabPanel>
       <TabPanel value={value} index={2}>
-        <RoomRate />
+        <RoomRate roomTypes={roomTypes} />
       </TabPanel>
     </Box>
   );

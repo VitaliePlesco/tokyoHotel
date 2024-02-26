@@ -4,7 +4,9 @@ import Stack from "@mui/material/Stack";
 import TextField from "@mui/material/TextField";
 import MenuItem from "@mui/material/MenuItem";
 import { Button } from "../buttons";
-import { addRooms, type State } from "@/lib/actions";
+import { addRooms } from "@/lib/actions";
+// import type { RoomType } from "@/lib/definitions";
+import { RoomType } from "@prisma/client";
 
 import { useFormState } from "react-dom";
 
@@ -12,10 +14,17 @@ import { useForm } from "react-hook-form";
 import ConsecutiveSnackbars from "@/components/SnackBar";
 import { useRef, useEffect } from "react";
 
-export default function AddRoom({ id }: { id: string }) {
+export default function AddRoom({
+  id,
+  roomTypes,
+}: {
+  id: string;
+  roomTypes: RoomType[];
+}) {
   const formRef = useRef<HTMLFormElement>(null);
   const addRoomsWithId = addRooms.bind(null, id);
   const initialState = { errors: {}, message: null };
+  // @ts-ignore
   const [state, dispatch] = useFormState(addRoomsWithId, initialState);
 
   const { register } = useForm();
@@ -63,12 +72,11 @@ export default function AddRoom({ id }: { id: string }) {
             <MenuItem disableRipple disabled selected defaultValue="">
               -- Please choose an option --
             </MenuItem>
-            <MenuItem disableRipple value={"DOUBLE"}>
-              Double
-            </MenuItem>
-            <MenuItem disableRipple value={"TWIN"}>
-              Twin
-            </MenuItem>
+            {roomTypes.map((roomType) => (
+              <MenuItem disableRipple key={roomType.id}>
+                {roomType.roomTypeName}
+              </MenuItem>
+            ))}
           </TextField>
           <Box sx={{ py: "0.5rem" }} id="number-error">
             {state?.errors?.type &&

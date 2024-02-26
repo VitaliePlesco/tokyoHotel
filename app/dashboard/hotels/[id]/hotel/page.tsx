@@ -6,14 +6,16 @@ import { notFound } from "next/navigation";
 import Box from "@mui/material/Box";
 
 import { fetchHotelById } from "@/lib/data";
+import { fetchRoomTypes } from "@/lib/data";
 
 export default async function page({ params }: { params: { id: string } }) {
   const id = decodeURI(params.id);
-
   const hotel = await fetchHotelById(id);
   if (!hotel) {
     notFound();
   }
+  const roomTypes = await fetchRoomTypes();
+
   return (
     <main>
       <Box
@@ -55,7 +57,7 @@ export default async function page({ params }: { params: { id: string } }) {
             },
           }}
         >
-          <TabNav id={id} />
+          <TabNav id={id} roomTypes={roomTypes} />
         </Box>
       </Box>
     </main>
