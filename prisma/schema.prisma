@@ -55,7 +55,7 @@ model Room {
 model RoomType {
   id           Int     @id @default(autoincrement())
   roomTypeName String  @unique
-  roomPrice    Decimal @db.Money
+  roomPrice    Decimal @db.Decimal(5, 2)
   Room         Room[]
 }
 
