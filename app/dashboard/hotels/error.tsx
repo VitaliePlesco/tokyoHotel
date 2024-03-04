@@ -29,7 +29,7 @@ export default function Error({
       }}
     >
       <Typography variant="h6" sx={{ textAlign: "center", p: "2rem" }}>
-        Something went wrong!
+        <>Something went wrong!</>
       </Typography>
       <Box
         component="button"
@@ -57,7 +57,7 @@ export default function Error({
         }}
         onClick={() => reset()}
       >
-        Try again
+        <>Try again</>
       </Box>
     </Box>
   );

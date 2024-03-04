@@ -30,9 +30,23 @@ export async function fetchHotelById(id: string) {
 export async function fetchRoomTypes() {
   noStore();
   try {
-    const categories = await db.roomType.findMany();
-    return categories
+    const roomTypes = await db.roomType.findMany();
+    return roomTypes;
   } catch (error) {
-    throw new Error("Failed to fetch categories")
+    throw new Error("Failed to fetch categories.")
+  }
+}
+
+export async function fetchCardData(id: string) {
+  noStore();
+  try {
+    const cardData = db.room.findMany({
+      where: {
+        hotelId: id
+      }
+    })
+    return cardData;
+  } catch (error) {
+    throw new Error('Failed to fetch card data.')
   }
 }

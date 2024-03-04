@@ -1,6 +1,6 @@
 import Breadcrumbs from "@/components/dashboard/breadcrumbs";
-import ManageRooms from "@/components/hotels/ManageRooms";
 import TabNav from "@/components/hotels/Rooms/TabNav";
+import CardWrapper from "@/components/hotels/Rooms/CardWrapper";
 
 import { notFound } from "next/navigation";
 import Box from "@mui/material/Box";
@@ -46,6 +46,9 @@ export default async function page({ params }: { params: { id: string } }) {
           },
         }}
       >
+        <div>
+          <CardWrapper id={id} />
+        </div>
         <Box
           sx={{
             borderRadius: "0.375rem",

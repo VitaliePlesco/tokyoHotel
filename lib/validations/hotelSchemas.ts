@@ -14,11 +14,19 @@ export type ThotelSchema = z.infer<typeof hotelSchema>;
 
 export const manageRoomsSchema = z.object({
   number: z.coerce.number({
-    required_error: "Please enter a number",
+    required_error: "Number is required",
     invalid_type_error: "Please enter a number greater than 0"
-  }).gt(0),
-  type: z.string().min(1, {
-    message: "Please select a category"
+  }).gt(0, {
+    message: "Please enter a number greater than 0"
+  }).lte(100, {
+    message: "Number must be between 1 & 100"
+  }),
+
+  type: z.string({
+    required_error: "Room type is required",
+    invalid_type_error: "Room type must be a string",
+  }).min(1, {
+    message: "Room type is required"
   })
 })
 

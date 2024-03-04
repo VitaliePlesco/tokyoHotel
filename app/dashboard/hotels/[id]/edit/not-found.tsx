@@ -17,10 +17,10 @@ export default function NotFound() {
     >
       <SentimentVeryDissatisfiedIcon />
       <Typography variant="h6" sx={{ textAlign: "center", p: "0rem" }}>
-        404 Not Found
+        <>404 Not Found</>
       </Typography>
       <Typography variant="body1" sx={{ textAlign: "center", pb: "2rem" }}>
-        Could not find the requested invoice.
+        <>Could not find the requested invoice.</>
       </Typography>
       <Box
         component={Link}
@@ -49,7 +49,7 @@ export default function NotFound() {
           },
         }}
       >
-        Go Back
+        <>Go Back</>
       </Box>
     </Box>
   );

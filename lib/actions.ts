@@ -100,52 +100,61 @@ export async function deleteHotel(id: string) {
 export type State = {
   errors?: {
     number?: string[],
-    type?: string[]
+    type?: string[],
+    title?: string[]
   }
   message?: string | null;
 }
 
-export async function addRooms(id: string, prevState: State, formData: FormData) {
-  const validateFields = manageRoomsSchema.safeParse({
-    number: parseInt(formData.get("number") as string),
-    type: formData.get("type")
-  });
-
-  if (!validateFields.success) {
-    return {
-      errors: validateFields.error.flatten().fieldErrors,
-      message: "Missing fields. Failed to add rooms."
-    };
+export async function addRooms(id: string, prevState: State, formData: FormData): Promise<State> {
+  console.log(formData);
+  return {
+    message: `received`
   }
 
-  const { number, type } = validateFields.data;
+  // const validateFields = manageRoomsSchema.safeParse({
+  //   number: parseInt(formData.get("number") as string),
+  //   type: formData.get("type")
+  // });
 
-  const roomCategories = await db.roomType.findMany();
-  const filteredCategory = roomCategories.filter(category => category.roomTypeName === type)
+  // if (!validateFields.success) {
+  //   return {
+  //     errors: validateFields.error.flatten().fieldErrors,
+  //     message: "Missing fields. Failed to add rooms."
+  //   };
+  // }
 
-  const rooms = []
-  for (let i = 0; i < number; i++) {
-    rooms.push({
-      roomTypeId: filteredCategory[0].id,
-      hotelId: id
-    })
-  }
+  // const { number, type } = validateFields.data;
 
-  try {
-    await db.room.createMany({
-      data: rooms
-    })
-  } catch (error) {
-    return {
-      message: "Failed to add rooms."
-    }
-  }
+  // const roomCategories = await db.roomType.findMany();
+  // const filteredCategory = roomCategories.filter(category => category.roomTypeName === type)
+
+  // const rooms = []
+  // for (let i = 0; i < number; i++) {
+  //   rooms.push({
+  //     roomTypeId: filteredCategory[0].id,
+  //     hotelId: id
+  //   })
+  // }
+
+  // try {
+  //   await db.room.createMany({
+  //     data: rooms
+  //   })
+  //   return {
+  //     message: `Added ${number} rooms`
+  //   }
+  // } catch (error) {
+  //   return {
+  //     message: "Failed to add rooms."
+  //   }
+  // }
 
 }
-export async function addCategory(prevState: State, formData: FormData) {
+export async function addCategory(prevState: State, formData: FormData): Promise<State> {
   const validateFields = manageRoomsSchema.safeParse({
     type: formData.get("type"),
-    number: parseInt(formData.get("number") as string)
+    number: parseFloat(formData.get("number") as string)
   });
 
   if (!validateFields.success) {
@@ -156,4 +165,65 @@ export async function addCategory(prevState: State, formData: FormData) {
   }
 
   const { type, number } = validateFields.data;
+  const rateInCents = (number) * 100;
+
+  try {
+    const roomType = await db.roomType.findUnique({
+      where: {
+        roomTypeName: type
+      }
+    })
+    if (roomType) return {
+      message: "This room type exists."
+    }
+    await db.roomType.create({
+      data: {
+        roomTypeName: type,
+        roomPrice: rateInCents
+      }
+    })
+    return {
+      message: `New room type ${type} added`
+    }
+  } catch (error) {
+    return {
+      message: "Failed to add room type."
+    }
+  }
+}
+
+export async function updateRoomRate(prevState: State, formData: FormData): Promise<State> {
+  const validateFields = manageRoomsSchema.safeParse({
+    type: formData.get("type"),
+    number: parseFloat(formData.get("number") as string)
+  });
+
+  if (!validateFields.success) {
+    return {
+      errors: validateFields.error.flatten().fieldErrors,
+      message: "Missing fields. Failed to add rooms."
+    };
+  }
+
+  const { type, number } = validateFields.data;
+  const rateInCents = number * 100;
+
+  try {
+    await db.roomType.update({
+      where: {
+        roomTypeName: type
+      },
+      data: {
+        roomPrice: rateInCents
+      }
+    })
+    return {
+      message: `New rate ${number} updated for ${type} room type`
+    }
+  } catch (error) {
+    return {
+      message: "Failed to update room rate."
+    }
+  }
+
 }

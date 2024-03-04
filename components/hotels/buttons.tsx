@@ -4,15 +4,18 @@ import Box from "@mui/material/Box";
 import ModeEditOutlineSharpIcon from "@mui/icons-material/ModeEditOutlineSharp";
 import DeleteOutlineSharpIcon from "@mui/icons-material/DeleteOutlineSharp";
 import Typography from "@mui/material/Typography";
-import React from "react";
+import React, { ComponentProps } from "react";
 import { deleteHotel } from "@/lib/actions";
 
 type ButtonProps = {
   Icon?: React.ReactElement;
-  children: React.ReactNode;
+  children?: React.ReactNode;
   link: string;
 };
 
+type BtnProps = ComponentProps<"button"> & {
+  children: React.ReactNode;
+};
 export function ButtonLink({ Icon, children, link }: ButtonProps) {
   return (
     <Box
@@ -56,11 +59,12 @@ export function ButtonLink({ Icon, children, link }: ButtonProps) {
     </Box>
   );
 }
-export function Button({ children }: { children: React.ReactNode }) {
+export function Button({ children, ...props }: BtnProps) {
   return (
     <Box
       component={"button"}
-      type="submit"
+      // type="submit"
+
       sx={{
         display: "flex",
         alignItems: "center",
