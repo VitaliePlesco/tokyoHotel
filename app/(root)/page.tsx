@@ -11,7 +11,9 @@ export default function Home() {
         <HeroImage url="/images/wide.jpg" height={600} />
         <Container maxWidth="lg" sx={{ pt: "3rem" }}>
           <Typography variant="h4">Select a hotel</Typography>
-          <HotelsList />
+          <div>
+            <HotelsList />
+          </div>
         </Container>
       </main>
     </div>
