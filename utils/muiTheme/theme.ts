@@ -10,6 +10,18 @@ const theme = createTheme({
   typography: {
 
     fontFamily: "inherit"
+  },
+  components: {
+    MuiButtonBase: {
+      defaultProps: {
+        disableRipple: true
+      }
+    },
+    MuiButtonGroup: {
+      defaultProps: {
+        disableRipple: true,
+      },
+    },
   }
 })
 

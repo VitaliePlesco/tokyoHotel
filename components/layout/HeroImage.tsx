@@ -1,3 +1,7 @@
+import Container from "@mui/material/Container";
+import Box from "@mui/material/Box";
+import BookingWrapper from "../booking/BookingWrapper";
+
 type HeroImageProps = {
   url: string;
   height: number;
@@ -13,9 +17,17 @@ export default function HeroImage({ url, height, children }: HeroImageProps) {
         backgroundRepeat: "no-repeat",
         backgroundSize: "cover",
         backgroundPosition: "center",
+
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "flex-end",
       }}
     >
-      {children}
+      <Container>
+        {children}
+
+        <BookingWrapper />
+      </Container>
     </div>
   );
 }

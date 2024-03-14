@@ -8,7 +8,18 @@ export default function Home() {
   return (
     <div>
       <main style={{ flex: 1 }}>
-        <HeroImage url="/images/wide.jpg" height={600} />
+        <HeroImage url="/images/wide.jpg" height={600}>
+          <Typography
+            variant="h3"
+            sx={{
+              textAlign: "center",
+              fontWeight: "bold",
+              color: "white",
+            }}
+          >
+            Where are You going to travel next?
+          </Typography>
+        </HeroImage>
         <Container maxWidth="lg" sx={{ pt: "3rem" }}>
           <Typography variant="h4">Select a hotel</Typography>
           <div>
