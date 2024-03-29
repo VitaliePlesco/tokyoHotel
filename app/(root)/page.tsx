@@ -3,7 +3,6 @@ import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
 
 import HotelsList from "@/components/layout/HotelsList";
-import { merriweather } from "../layout";
 
 export default function Home() {
   return (
