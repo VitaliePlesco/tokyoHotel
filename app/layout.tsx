@@ -1,7 +1,7 @@
 import "./globals.css";
 import type { Metadata } from "next";
-import { Poppins } from "next/font/google";
-import { Roboto, Merriweather } from "next/font/google";
+
+import { Roboto } from "next/font/google";
 
 import ThemeRegistry from "@/utils/muiTheme/ThemeRegistry";
 
@@ -11,17 +11,6 @@ export const metadata: Metadata = {
 };
 
 const roboto = Roboto({
-  weight: ["300", "400", "500", "700"],
-  subsets: ["latin"],
-});
-
-export const merriweather = Merriweather({
-  weight: ["300", "400", "700"],
-  style: ["normal", "italic"],
-  subsets: ["latin"],
-});
-
-const poppins = Poppins({
   weight: ["300", "400", "500", "700"],
   subsets: ["latin"],
 });
