@@ -40,13 +40,6 @@ export default function AddRoom({
     resolver: zodResolver(manageRoomsSchema),
   });
 
-  // useEffect(() => {
-  //   if (!state?.errors) {
-  //     // formRef.current?.reset();
-  //     reset();
-  //   }
-  // }, [state, reset]);
-
   const submit = () => {
     formRef.current?.submit();
 
@@ -144,7 +137,7 @@ export default function AddRoom({
             </>
           </Box>
         </Box>
-        <pre>{JSON.stringify(getValues(), null, 4)}</pre>
+
         <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
           <Button type="submit">Add Room</Button>
         </Box>

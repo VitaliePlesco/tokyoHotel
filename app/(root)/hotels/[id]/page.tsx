@@ -5,6 +5,7 @@ import { notFound } from "next/navigation";
 
 import { fetchHotelById } from "@/lib/data";
 import { hotelInfo } from "@/lib/placeholder-data";
+import SearchRoomsByHotel from "@/components/booking/SearchRoomsByHotel";
 
 export default async function page({ params }: { params: { id: string } }) {
   const id = decodeURI(params.id);
@@ -17,13 +18,6 @@ export default async function page({ params }: { params: { id: string } }) {
   return (
     <Box sx={{ flex: 1, py: "2.5rem" }}>
       <Container>
-        <Typography variant="h3" sx={{ py: "0rem" }}>
-          {hotel.hotelName}
-        </Typography>
-        <Typography variant="subtitle1" sx={{ py: "1rem" }}>
-          {hotel.city}
-        </Typography>
-
         <Box
           sx={{
             height: `400px`,
@@ -34,6 +28,36 @@ export default async function page({ params }: { params: { id: string } }) {
           }}
         ></Box>
 
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            py: 2,
+            alignItems: "baseline",
+          }}
+        >
+          <Typography variant="h3">{hotel.hotelName}</Typography>
+          <Typography variant="h6">{hotel.city}</Typography>
+        </Box>
+      </Container>
+      <Box
+        sx={{
+          bgcolor: "#eeeff2",
+        }}
+      >
+        <Container>
+          <div>
+            <Box
+              sx={{
+                py: 6,
+              }}
+            >
+              <SearchRoomsByHotel />
+            </Box>
+          </div>
+        </Container>
+      </Box>
+      <Container>
         <Typography
           variant="h5"
           sx={{ pt: "2rem", color: "primary.main", fontWeight: "bold" }}

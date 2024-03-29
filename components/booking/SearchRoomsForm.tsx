@@ -8,19 +8,43 @@ import Paper from "@mui/material/Paper";
 import InputAdornment from "@mui/material/InputAdornment";
 import ApartmentIcon from "@mui/icons-material/Apartment";
 import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";
-
-import DateRange from "./DateRange";
+import { useRouter } from "next/navigation";
+import { format } from "date-fns";
+import DateRangeCalendar from "./DateRangeCalendar";
 
 import { useForm, Controller } from "react-hook-form";
-import Input from "@mui/material/Input";
+import { Hotel } from "@prisma/client";
 
-export default function BookingForm() {
-  const { reset, control, handleSubmit } = useForm();
+export default function SearchRoomsForm({ hotels }: { hotels: Hotel[] }) {
+  const router = useRouter();
+
+  const { control, handleSubmit, getValues, watch } = useForm();
+
+  const submit = () => {
+    const { from: checkin, to: checkout } = getValues("dayPicker");
+    const { hotel, guests } = getValues();
+    const params = new URLSearchParams({ hotel, checkin, checkout, guests });
+
+    router.push(`hotels/${hotel}?${params.toString()}`);
+  };
+
+  const dayPicker = watch("dayPicker");
+  const checkin = dayPicker?.from
+    ? format(dayPicker?.from, "d MMM")
+    : "Checkin";
+  const checkout = dayPicker?.to ? format(dayPicker?.to, "d MMM") : "Checkout";
+
+  const canSearch =
+    watch("hotel") !== "Choose hotel" &&
+    !!watch("dayPicker") &&
+    !!watch("guests");
+
   return (
     <div>
       <Paper sx={{ p: "1.25rem", bgcolor: "white" }}>
         <Box
           component="form"
+          onSubmit={handleSubmit(submit)}
           sx={{
             display: "flex",
             justifyContent: "space-between",
@@ -31,13 +55,16 @@ export default function BookingForm() {
           <Controller
             control={control}
             name="hotel"
+            defaultValue="Choose hotel"
             render={({ field }) => (
               <TextField
                 select
                 sx={{ bgcolor: "white" }}
                 {...field}
                 fullWidth
-                defaultValue="hotel 1"
+                SelectProps={{
+                  MenuProps: { disableScrollLock: true, marginThreshold: null },
+                }}
                 InputProps={{
                   startAdornment: (
                     <InputAdornment position="start">
@@ -46,28 +73,48 @@ export default function BookingForm() {
                   ),
                 }}
               >
-                <MenuItem disableRipple value="hotel 1" sx={{ pl: "2.9rem" }}>
-                  Hotel 1
+                <MenuItem
+                  disableRipple
+                  disabled
+                  value="Choose hotel"
+                  sx={{ pl: "2.9rem" }}
+                >
+                  Choose hotel
                 </MenuItem>
-                <MenuItem disableRipple value="hotel 2" sx={{ pl: "2.9rem" }}>
-                  Hotel 2
-                </MenuItem>
+
+                {hotels.map((hotel) => (
+                  <MenuItem
+                    key={hotel.hotelName}
+                    disableRipple
+                    value={hotel.hotelName}
+                    sx={{ pl: "2.9rem" }}
+                  >
+                    {hotel.hotelName}
+                  </MenuItem>
+                ))}
               </TextField>
             )}
           />
           <Box sx={{ width: "100%" }}>
-            <DateRange />
+            <DateRangeCalendar
+              control={control}
+              checkin={checkin}
+              checkout={checkout}
+            />
           </Box>
           <Controller
             control={control}
             name="guests"
+            defaultValue="1 guest"
             render={({ field }) => (
               <TextField
                 select
                 sx={{ bgcolor: "white" }}
                 {...field}
                 fullWidth
-                defaultValue="1 guest"
+                SelectProps={{
+                  MenuProps: { disableScrollLock: true, marginThreshold: null },
+                }}
                 InputProps={{
                   startAdornment: (
                     <InputAdornment position="start">
@@ -85,11 +132,16 @@ export default function BookingForm() {
               </TextField>
             )}
           />
-          <Box>
-            <Button variant="contained" sx={{ py: "0.95rem" }}>
+          <div>
+            <Button
+              type="submit"
+              variant="contained"
+              disabled={!canSearch}
+              sx={{ py: "0.95rem" }}
+            >
               <Typography sx={{ whiteSpace: "nowrap" }}>Find Rooms</Typography>
             </Button>
-          </Box>
+          </div>
         </Box>
       </Paper>
     </div>

@@ -1,24 +1,31 @@
-import TextField from "@mui/material/TextField";
-import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
-import Select from "@mui/material/Select";
 import Menu from "@mui/material/Menu";
-import MenuItem from "@mui/material/MenuItem";
 import Typography from "@mui/material/Typography";
-import InputAdornment from "@mui/material/InputAdornment";
+
+import { format } from "date-fns";
 
 import DateRangeOutlinedIcon from "@mui/icons-material/DateRangeOutlined";
 
-import { useForm, Controller } from "react-hook-form";
+import { Controller, Control } from "react-hook-form";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { DayPicker, DateRange } from "react-day-picker";
-import { format } from "date-fns";
+
 import "react-day-picker/dist/style.css";
 
-export default function DateRange() {
-  const [range, setRange] = useState<DateRange | undefined>();
-
+export default function DateRangeCalendar({
+  control,
+  checkin,
+  checkout,
+  onChangeDate,
+  selectedDefault,
+}: {
+  control: Control;
+  checkin: string;
+  checkout: string;
+  onChangeDate?: (value: DateRange) => void;
+  selectedDefault?: DateRange;
+}) {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -28,7 +35,13 @@ export default function DateRange() {
     setAnchorEl(null);
   };
 
-  const { reset, control, handleSubmit } = useForm();
+  const paramsFrom = selectedDefault?.from
+    ? format(selectedDefault?.from, "d MMM")
+    : null;
+  const paramsTo = selectedDefault?.to
+    ? format(selectedDefault?.to, "d MMM")
+    : null;
+
   return (
     <>
       <Button
@@ -51,12 +64,8 @@ export default function DateRange() {
             border: "1px solid black",
             backgroundColor: "transparent",
           },
-          // ":active": {
-          //   backgroundColor: "transparent",
-          // },
           ":focus": {
             outline: open ? "" : "2px solid #1976d2",
-            // border: "none",
           },
         }}
       >
@@ -66,7 +75,7 @@ export default function DateRange() {
             whiteSpace: "nowrap",
           }}
         >
-          Checkin - Checkout
+          {paramsFrom ?? checkin} &#8594; {paramsTo ?? checkout}
         </Typography>
       </Button>
       <Menu
@@ -74,21 +83,47 @@ export default function DateRange() {
         anchorEl={anchorEl}
         open={open}
         onClose={handleClose}
+        transitionDuration={100}
         MenuListProps={{
           "aria-labelledby": "menu-button",
         }}
+        anchorOrigin={{
+          vertical: "bottom",
+          horizontal: "left",
+        }}
+        transformOrigin={{
+          vertical: "top",
+          horizontal: "left",
+        }}
+        marginThreshold={null}
+        disableScrollLock
       >
-        <DayPicker
-          mode="range"
-          numberOfMonths={2}
-          pagedNavigation
-          showOutsideDays
-          weekStartsOn={1}
-          selected={range}
-          onSelect={setRange}
+        <Controller
+          control={control}
+          defaultValue={selectedDefault}
+          name="dayPicker"
+          render={({ field: { onChange, value } }) => (
+            <DayPicker
+              mode="range"
+              numberOfMonths={2}
+              pagedNavigation
+              showOutsideDays
+              fromDate={new Date()}
+              defaultMonth={selectedDefault?.from}
+              weekStartsOn={1}
+              selected={value}
+              onSelect={(value) => {
+                onChange(value);
+                if (onChangeDate) {
+                  if (value) {
+                    onChangeDate(value);
+                  }
+                }
+              }}
+            />
+          )}
         />
       </Menu>
-      <div>{/* <Button component={Select}>Hwllo</Button> */}</div>
     </>
   );
 }

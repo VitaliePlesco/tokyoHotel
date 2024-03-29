@@ -1,6 +1,6 @@
 import Container from "@mui/material/Container";
 import Box from "@mui/material/Box";
-import BookingWrapper from "../booking/BookingWrapper";
+import SearchWrapper from "../booking/SearchWrapper";
 
 type HeroImageProps = {
   url: string;
@@ -26,7 +26,9 @@ export default function HeroImage({ url, height, children }: HeroImageProps) {
       <Container>
         {children}
 
-        <BookingWrapper />
+        <div>
+          <SearchWrapper />
+        </div>
       </Container>
     </div>
   );

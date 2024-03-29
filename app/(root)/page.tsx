@@ -3,12 +3,13 @@ import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
 
 import HotelsList from "@/components/layout/HotelsList";
+import { merriweather } from "../layout";
 
 export default function Home() {
   return (
     <div>
       <main style={{ flex: 1 }}>
-        <HeroImage url="/images/wide.jpg" height={600}>
+        <HeroImage url="/images/wide.jpg" height={500}>
           <Typography
             variant="h3"
             sx={{
