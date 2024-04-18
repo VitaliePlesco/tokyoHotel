@@ -2,20 +2,15 @@ import Button from "@mui/material/Button";
 import Menu from "@mui/material/Menu";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
-
-import { addDays, format } from "date-fns";
-
 import DateRangeOutlinedIcon from "@mui/icons-material/DateRangeOutlined";
 
+import { useState } from "react";
+import { useUrlParams } from "@/lib/hooks/useUrlParams";
 import { Controller, Control } from "react-hook-form";
 
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import "./datePicker.css";
-
-import { useState } from "react";
-
-import "./dateRangeCalendar.css";
 
 export default function DateRangeCalendar({
   control,
@@ -36,6 +31,8 @@ export default function DateRangeCalendar({
   const handleClose = () => {
     setAnchorEl(null);
   };
+
+  const { checkin: from, checkout: to } = useUrlParams();
 
   return (
     <Box sx={{ width: "100%" }}>
@@ -70,9 +67,7 @@ export default function DateRangeCalendar({
             whiteSpace: "nowrap",
           }}
         >
-          {checkin ? format(checkin, "dd MMM") : "checkin"} &#8594;{" "}
-          {checkout ? format(checkout, "dd MMM") : "checkout"}
-          {/* {checkin} &#8594; {checkout} */}
+          {checkin} &#8594; {checkout}
         </Typography>
       </Button>
       <Menu
@@ -107,38 +102,9 @@ export default function DateRangeCalendar({
         disableScrollLock
         sx={{ width: "calc(100% - 1.5rem)" }}
       >
-        {/* <Controller
-          control={control}
-          // defaultValue={defaultDates}
-          name="dayPicker"
-          render={({ field: { onChange, value } }) => (
-            <Calendar
-              onChange={(value) => {
-                onChange(value);
-                if (onChangeDate) {
-                  if (value) {
-                    onChangeDate(value);
-                  }
-                }
-              }}
-              value={value}
-              allowPartialRange
-              showDoubleView
-              selectRange
-              next2Label={null}
-              prev2Label={null}
-              prevLabel={<ArrowBackIosIcon />}
-              nextLabel={<ArrowForwardIosIcon />}
-              goToRangeStartOnSelect={false}
-              // defaultView="month"
-
-              // minDetail="month"
-            />
-          )}
-        /> */}
         <Controller
           control={control}
-          defaultValue={[new Date(), addDays(new Date(), 1)]}
+          defaultValue={[from, to]}
           name="dayPicker"
           render={({ field: { onChange, value } }) => (
             <DatePicker

@@ -4,8 +4,8 @@ import TextField from "@mui/material/TextField";
 import MenuItem from "@mui/material/MenuItem";
 import Paper from "@mui/material/Paper";
 import InputAdornment from "@mui/material/InputAdornment";
-
 import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";
+
 import { useSearchParams, usePathname, useRouter } from "next/navigation";
 import { addDays, format } from "date-fns";
 import DateRangeCalendar from "./DateRangeCalendar";
@@ -35,29 +35,19 @@ export default function SearchRoomsByHotel({ hotelId }: { hotelId: string }) {
     replace(`${pathname}?${params.toString()}`, { scroll: false });
   }
 
-  const checkStart = searchParams.get("checkin");
-  const checkEnd = searchParams.get("checkout");
-  const start = checkStart ? new Date(checkStart) : undefined;
-  const end = checkEnd ? new Date(checkEnd) : undefined;
-  const selectedRangeDefault = [start, end];
-
-  const numberOfGuests = searchParams.get("guests")?.toString() || "1 guest";
-
+  const { checkin, checkout, guests } = useUrlParams();
   const { control, watch } = useForm();
 
-  // const dayPicker = watch("dayPicker");
-  // // const [from, to] = dayPicker;
-  // let checkin: Date | string = "Checkin";
-  // let checkout: Date | string = "Checkout";
-  // if (dayPicker && dayPicker[0]) {
-  //   checkin = format(dayPicker[0], "dd MMM");
-  // }
-  // if (dayPicker && dayPicker[1]) {
-  //   checkout = format(dayPicker[1], "dd MMM");
-  // }
-
-  const { hotel, checkin, checkout, guests } = useUrlParams();
-  // console.log(hotel, guests, "par from hook");
+  const dayPicker = watch("dayPicker");
+  let from = format(checkin, "dd MMM") || format(new Date(), "dd MMM");
+  let to =
+    format(checkout, "dd MMM") || format(addDays(new Date(), 1), "dd MMM");
+  if (dayPicker && dayPicker[0]) {
+    from = format(dayPicker[0], "dd MMM");
+  }
+  if (dayPicker && dayPicker[1]) {
+    to = format(dayPicker[1], "dd MMM");
+  }
 
   const handleDateRangeChange = (value: Date[]) => {
     const params = new URLSearchParams(searchParams);
@@ -107,20 +97,19 @@ export default function SearchRoomsByHotel({ hotelId }: { hotelId: string }) {
           <Box sx={{ width: "100%", bgcolor: "white" }}>
             <DateRangeCalendar
               control={control}
-              checkin={checkin}
-              checkout={checkout}
+              checkin={from}
+              checkout={to}
               onChangeDate={handleDateRangeChange}
             />
           </Box>
           <Controller
             control={control}
             name="guests"
-            // defaultValue={guests}
             render={({ field: { onChange } }) => (
               <TextField
                 select
                 sx={{ bgcolor: "white" }}
-                value={guests || "1 guest"}
+                defaultValue={guests || "1 guest"}
                 fullWidth
                 onChange={(e) => {
                   handleChange(e);

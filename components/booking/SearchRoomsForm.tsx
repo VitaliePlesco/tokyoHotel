@@ -37,9 +37,8 @@ export default function SearchRoomsForm({ hotels }: { hotels: Hotel[] }) {
   };
 
   const dayPicker = watch("dayPicker");
-  // const [from, to] = dayPicker;
-  let checkin: Date | string = "Checkin";
-  let checkout: Date | string = "Checkout";
+  let checkin = "Checkin";
+  let checkout = "Checkout";
   if (dayPicker && dayPicker[0]) {
     checkin = format(dayPicker[0], "dd MMM");
   }
