@@ -1,5 +1,5 @@
 import HeroImage from "@/components/layout/HeroImage";
-import HotelsList from "@/components/layout/HotelsList";
+import HotelsList from "@/components/layout/hotel/HotelsList";
 
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";

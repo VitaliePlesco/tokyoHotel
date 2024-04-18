@@ -12,6 +12,8 @@ import { useRouter } from "next/navigation";
 import { format } from "date-fns";
 import DateRangeCalendar from "./DateRangeCalendar";
 
+import { useUrlParams } from "@/lib/hooks/useUrlParams";
+
 import { useForm, Controller } from "react-hook-form";
 import { Hotel } from "@prisma/client";
 
@@ -21,18 +23,29 @@ export default function SearchRoomsForm({ hotels }: { hotels: Hotel[] }) {
   const { control, handleSubmit, getValues, watch } = useForm();
 
   const submit = () => {
-    const { from: checkin, to: checkout } = getValues("dayPicker");
+    const [checkin, checkout] = getValues("dayPicker");
+    console.log(new Date(checkin), typeof checkin);
     const { hotel, guests } = getValues();
-    const params = new URLSearchParams({ hotel, checkin, checkout, guests });
+    const params = new URLSearchParams({
+      hotel,
+      checkin: format(checkin, "y-MM-dd"),
+      checkout: format(checkout, "y-MM-dd"),
+      guests,
+    });
 
     router.push(`hotels/${hotel}?${params.toString()}`);
   };
 
   const dayPicker = watch("dayPicker");
-  const checkin = dayPicker?.from
-    ? format(dayPicker?.from, "d MMM")
-    : "Checkin";
-  const checkout = dayPicker?.to ? format(dayPicker?.to, "d MMM") : "Checkout";
+  // const [from, to] = dayPicker;
+  let checkin: Date | string = "Checkin";
+  let checkout: Date | string = "Checkout";
+  if (dayPicker && dayPicker[0]) {
+    checkin = format(dayPicker[0], "dd MMM");
+  }
+  if (dayPicker && dayPicker[1]) {
+    checkout = format(dayPicker[1], "dd MMM");
+  }
 
   const canSearch =
     watch("hotel") !== "Choose hotel" &&
@@ -41,14 +54,29 @@ export default function SearchRoomsForm({ hotels }: { hotels: Hotel[] }) {
 
   return (
     <div>
-      <Paper sx={{ p: "1.25rem", bgcolor: "white" }}>
+      <Paper
+        sx={{
+          p: {
+            xs: "0.75rem",
+            md: "1.25rem",
+          },
+          bgcolor: "white",
+        }}
+      >
         <Box
           component="form"
           onSubmit={handleSubmit(submit)}
           sx={{
             display: "flex",
+            flexDirection: {
+              xs: "column",
+              md: "row",
+            },
             justifyContent: "space-between",
-            gap: "1rem",
+            gap: {
+              xs: "0.25rem",
+              md: "1rem",
+            },
             alignItems: "center",
           }}
         >
@@ -63,7 +91,10 @@ export default function SearchRoomsForm({ hotels }: { hotels: Hotel[] }) {
                 {...field}
                 fullWidth
                 SelectProps={{
-                  MenuProps: { disableScrollLock: true, marginThreshold: null },
+                  MenuProps: {
+                    disableScrollLock: true,
+                    marginThreshold: null,
+                  },
                 }}
                 InputProps={{
                   startAdornment: (
@@ -81,7 +112,6 @@ export default function SearchRoomsForm({ hotels }: { hotels: Hotel[] }) {
                 >
                   Choose hotel
                 </MenuItem>
-
                 {hotels.map((hotel) => (
                   <MenuItem
                     key={hotel.hotelName}
@@ -95,7 +125,11 @@ export default function SearchRoomsForm({ hotels }: { hotels: Hotel[] }) {
               </TextField>
             )}
           />
-          <Box sx={{ width: "100%" }}>
+          <Box
+            sx={{
+              width: "100%",
+            }}
+          >
             <DateRangeCalendar
               control={control}
               checkin={checkin}
@@ -113,7 +147,10 @@ export default function SearchRoomsForm({ hotels }: { hotels: Hotel[] }) {
                 {...field}
                 fullWidth
                 SelectProps={{
-                  MenuProps: { disableScrollLock: true, marginThreshold: null },
+                  MenuProps: {
+                    disableScrollLock: true,
+                    marginThreshold: null,
+                  },
                 }}
                 InputProps={{
                   startAdornment: (
@@ -132,16 +169,14 @@ export default function SearchRoomsForm({ hotels }: { hotels: Hotel[] }) {
               </TextField>
             )}
           />
-          <div>
-            <Button
-              type="submit"
-              variant="contained"
-              disabled={!canSearch}
-              sx={{ py: "0.95rem" }}
-            >
-              <Typography sx={{ whiteSpace: "nowrap" }}>Find Rooms</Typography>
-            </Button>
-          </div>
+          <Button
+            type="submit"
+            variant="contained"
+            disabled={!canSearch}
+            sx={{ py: "0.95rem", width: "100%" }}
+          >
+            <Typography sx={{ whiteSpace: "nowrap" }}>Find Rooms</Typography>
+          </Button>
         </Box>
       </Paper>
     </div>

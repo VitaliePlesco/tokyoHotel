@@ -10,7 +10,7 @@ export default async function HotelsList() {
   const hotels: Hotel[] = await fetchHotels();
   const hotelsWithImg = mergeTwoArrays(hotels, hotelInfo);
   return (
-    <Box sx={{ py: "2.5rem" }}>
+    <Box sx={{ py: "1.5rem" }}>
       <Grid container spacing={4}>
         {hotelsWithImg.map((hotel) => (
           <Grid key={hotel.hotelName} item xs={12} sm={6} md={4}>

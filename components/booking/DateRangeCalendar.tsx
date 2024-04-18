@@ -1,30 +1,32 @@
 import Button from "@mui/material/Button";
 import Menu from "@mui/material/Menu";
 import Typography from "@mui/material/Typography";
+import Box from "@mui/material/Box";
 
-import { format } from "date-fns";
+import { addDays, format } from "date-fns";
 
 import DateRangeOutlinedIcon from "@mui/icons-material/DateRangeOutlined";
 
 import { Controller, Control } from "react-hook-form";
 
-import { useState } from "react";
-import { DayPicker, DateRange } from "react-day-picker";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import "./datePicker.css";
 
-import "react-day-picker/dist/style.css";
+import { useState } from "react";
+
+import "./dateRangeCalendar.css";
 
 export default function DateRangeCalendar({
   control,
   checkin,
   checkout,
   onChangeDate,
-  selectedDefault,
 }: {
   control: Control;
   checkin: string;
   checkout: string;
-  onChangeDate?: (value: DateRange) => void;
-  selectedDefault?: DateRange;
+  onChangeDate?: (value: any) => void;
 }) {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
@@ -35,15 +37,8 @@ export default function DateRangeCalendar({
     setAnchorEl(null);
   };
 
-  const paramsFrom = selectedDefault?.from
-    ? format(selectedDefault?.from, "d MMM")
-    : null;
-  const paramsTo = selectedDefault?.to
-    ? format(selectedDefault?.to, "d MMM")
-    : null;
-
   return (
-    <>
+    <Box sx={{ width: "100%" }}>
       <Button
         id="menu-button"
         variant="outlined"
@@ -55,7 +50,7 @@ export default function DateRangeCalendar({
         sx={{
           boxSizing: "border-box",
           width: "100%",
-          py: "0.94rem",
+          py: "0.9375rem",
           border: "1px solid #c6c6c6",
           outline: open ? "2px solid #1976d2" : "",
           textTransform: "none",
@@ -75,7 +70,9 @@ export default function DateRangeCalendar({
             whiteSpace: "nowrap",
           }}
         >
-          {paramsFrom ?? checkin} &#8594; {paramsTo ?? checkout}
+          {checkin ? format(checkin, "dd MMM") : "checkin"} &#8594;{" "}
+          {checkout ? format(checkout, "dd MMM") : "checkout"}
+          {/* {checkin} &#8594; {checkout} */}
         </Typography>
       </Button>
       <Menu
@@ -87,6 +84,17 @@ export default function DateRangeCalendar({
         MenuListProps={{
           "aria-labelledby": "menu-button",
         }}
+        slotProps={{
+          paper: {
+            sx: {
+              width: {
+                xs: "calc(100% - 1.5rem)",
+                sm: "calc(100% - 3rem)",
+                md: "auto",
+              },
+            },
+          },
+        }}
         anchorOrigin={{
           vertical: "bottom",
           horizontal: "left",
@@ -97,22 +105,15 @@ export default function DateRangeCalendar({
         }}
         marginThreshold={null}
         disableScrollLock
+        sx={{ width: "calc(100% - 1.5rem)" }}
       >
-        <Controller
+        {/* <Controller
           control={control}
-          defaultValue={selectedDefault}
+          // defaultValue={defaultDates}
           name="dayPicker"
           render={({ field: { onChange, value } }) => (
-            <DayPicker
-              mode="range"
-              numberOfMonths={2}
-              pagedNavigation
-              showOutsideDays
-              fromDate={new Date()}
-              defaultMonth={selectedDefault?.from}
-              weekStartsOn={1}
-              selected={value}
-              onSelect={(value) => {
+            <Calendar
+              onChange={(value) => {
                 onChange(value);
                 if (onChangeDate) {
                   if (value) {
@@ -120,10 +121,47 @@ export default function DateRangeCalendar({
                   }
                 }
               }}
+              value={value}
+              allowPartialRange
+              showDoubleView
+              selectRange
+              next2Label={null}
+              prev2Label={null}
+              prevLabel={<ArrowBackIosIcon />}
+              nextLabel={<ArrowForwardIosIcon />}
+              goToRangeStartOnSelect={false}
+              // defaultView="month"
+
+              // minDetail="month"
+            />
+          )}
+        /> */}
+        <Controller
+          control={control}
+          defaultValue={[new Date(), addDays(new Date(), 1)]}
+          name="dayPicker"
+          render={({ field: { onChange, value } }) => (
+            <DatePicker
+              selected={value[0]}
+              onChange={(value) => {
+                onChange(value);
+                if (onChangeDate) {
+                  if (value) {
+                    onChangeDate(value);
+                  }
+                }
+              }}
+              startDate={value[0]}
+              endDate={value[1]}
+              selectsRange
+              monthsShown={2}
+              minDate={new Date()}
+              calendarStartDay={1}
+              inline
             />
           )}
         />
       </Menu>
-    </>
+    </Box>
   );
 }

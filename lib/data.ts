@@ -1,6 +1,7 @@
 import { db } from "@/lib/db";
 
 import { unstable_noStore as noStore } from 'next/cache';
+import { DateRange } from "react-day-picker";
 
 
 export async function fetchHotels() {
@@ -40,7 +41,7 @@ export async function fetchRoomTypes() {
 export async function fetchCardData(id: string) {
   noStore();
   try {
-    const cardData = db.room.findMany({
+    const cardData = await db.room.findMany({
       where: {
         hotelId: id
       }
@@ -48,5 +49,22 @@ export async function fetchCardData(id: string) {
     return cardData;
   } catch (error) {
     throw new Error('Failed to fetch card data.')
+  }
+}
+
+export async function fetchAvailableRooms(hotelId: string) {
+  noStore();
+  try {
+    const availableRooms = await db.room.findMany({
+      where: {
+        hotelId: hotelId,
+        roomStatus: "VACANT"
+      },
+
+    })
+    // console.log(availableRooms.length)
+    return availableRooms;
+  } catch (error) {
+    throw new Error("Failed to fetch available rooms.")
   }
 }

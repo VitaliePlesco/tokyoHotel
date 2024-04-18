@@ -1,30 +1,50 @@
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
+
 import { notFound } from "next/navigation";
 
 import { fetchHotelById } from "@/lib/data";
+import { fetchAvailableRooms } from "@/lib/data";
 import { hotelInfo } from "@/lib/placeholder-data";
+
 import SearchRoomsByHotel from "@/components/booking/SearchRoomsByHotel";
+import SelectRoom from "@/components/layout/room/SelectRoom";
+import Basket from "@/components/layout/basket/Basket";
+import MobileBasket from "@/components/layout/basket/MobileBasket";
 
 export default async function page({ params }: { params: { id: string } }) {
   const id = decodeURI(params.id);
   const hotel = await fetchHotelById(id);
   const filteredHotel = hotelInfo.filter((hotel) => hotel.hotelName === id);
+  const rooms = await fetchAvailableRooms(id);
 
   if (!hotel) {
     notFound();
   }
   return (
-    <Box sx={{ flex: 1, py: "2.5rem" }}>
+    <Box
+      sx={{
+        flex: 1,
+        py: {
+          xs: "1.5rem",
+          md: "2.5rem",
+        },
+      }}
+    >
       <Container>
         <Box
           sx={{
-            height: `400px`,
+            height: {
+              xs: "150px",
+              sm: "250px",
+              md: "300px",
+            },
             backgroundImage: `url(${filteredHotel[0].imgLarge})`,
             backgroundRepeat: "no-repeat",
             backgroundSize: "cover",
             backgroundPosition: "center",
+            borderRadius: "0.3125rem",
           }}
         ></Box>
 
@@ -46,15 +66,56 @@ export default async function page({ params }: { params: { id: string } }) {
         }}
       >
         <Container>
-          <div>
+          <Box>
             <Box
               sx={{
-                py: 6,
+                py: 4,
+                display: "flex",
+                flexDirection: "column",
+                gap: "2rem",
               }}
             >
-              <SearchRoomsByHotel />
+              <SearchRoomsByHotel hotelId={id} />
+              <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: {
+                    xs: "column",
+                    md: "row",
+                  },
+                  alignItems: "flex-start",
+                  gap: {
+                    lg: "2rem",
+                  },
+                  width: "100%",
+                }}
+              >
+                <Box
+                  sx={{
+                    width: {
+                      xs: "100%",
+                      lg: "70%",
+                    },
+                  }}
+                >
+                  <SelectRoom rooms={rooms} />
+                </Box>
+
+                <Box
+                  sx={{
+                    width: {
+                      lg: "30%",
+                    },
+                    bgcolor: "lightblue",
+                    position: "sticky",
+                    top: "2rem",
+                  }}
+                >
+                  <Basket />
+                </Box>
+              </Box>
             </Box>
-          </div>
+          </Box>
         </Container>
       </Box>
       <Container>
@@ -86,6 +147,16 @@ export default async function page({ params }: { params: { id: string } }) {
           {hotel.email}
         </Typography>
       </Container>
+      <Box
+        sx={{
+          position: "fixed",
+          bottom: 0,
+          width: "100%",
+          zIndex: 2,
+        }}
+      >
+        <MobileBasket />
+      </Box>
     </Box>
   );
 }
