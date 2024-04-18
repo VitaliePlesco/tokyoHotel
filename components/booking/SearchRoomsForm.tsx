@@ -24,7 +24,7 @@ export default function SearchRoomsForm({ hotels }: { hotels: Hotel[] }) {
 
   const submit = () => {
     const [checkin, checkout] = getValues("dayPicker");
-    console.log(new Date(checkin), typeof checkin);
+
     const { hotel, guests } = getValues();
     const params = new URLSearchParams({
       hotel,
