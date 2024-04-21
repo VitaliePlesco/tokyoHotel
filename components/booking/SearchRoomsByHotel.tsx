@@ -39,9 +39,8 @@ export default function SearchRoomsByHotel({ hotelId }: { hotelId: string }) {
   const { control, watch } = useForm();
 
   const dayPicker = watch("dayPicker");
-  let from = format(checkin, "dd MMM") || format(new Date(), "dd MMM");
-  let to =
-    format(checkout, "dd MMM") || format(addDays(new Date(), 1), "dd MMM");
+  let from = format(new Date(), "dd MMM");
+  let to = format(addDays(new Date(), 1), "dd MMM");
   if (dayPicker && dayPicker[0]) {
     from = format(dayPicker[0], "dd MMM");
   }
