@@ -27,8 +27,8 @@ export default function DateRangeSummary({
           gap: "0.25rem",
         }}
       >
-        <DateRangeOutlinedIcon sx={{ color: "text.secondary" }} />
-        <Typography>
+        <DateRangeOutlinedIcon sx={{ color: "text.primary" }} />
+        <Typography sx={{ color: "text.primary" }}>
           {checkin} &#8594; {checkout}
         </Typography>
       </Box>

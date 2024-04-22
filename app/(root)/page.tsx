@@ -1,6 +1,7 @@
 import HeroImage from "@/components/layout/HeroImage";
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
+import SearchWrapper from "@/components/booking/SearchWrapper";
 
 import HotelsList from "@/components/layout/hotel/HotelsList";
 
@@ -27,6 +28,7 @@ export default function Home() {
           >
             Where are You going to travel next?
           </Typography>
+          <SearchWrapper />
         </HeroImage>
         <Container maxWidth="lg" sx={{ pt: "2rem" }}>
           <Typography variant="h4">Select a hotel</Typography>

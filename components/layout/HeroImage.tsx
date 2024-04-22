@@ -23,13 +23,7 @@ export default function HeroImage({ url, height, children }: HeroImageProps) {
         justifyContent: "flex-end",
       }}
     >
-      <Container>
-        {children}
-
-        <div>
-          <SearchWrapper />
-        </div>
-      </Container>
+      <Container>{children}</Container>
     </div>
   );
 }

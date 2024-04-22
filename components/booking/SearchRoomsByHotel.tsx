@@ -39,8 +39,10 @@ export default function SearchRoomsByHotel({ hotelId }: { hotelId: string }) {
   const { control, watch } = useForm();
 
   const dayPicker = watch("dayPicker");
-  let from = format(new Date(), "dd MMM");
-  let to = format(addDays(new Date(), 1), "dd MMM");
+  let from = checkin ? format(checkin, "dd MMM") : format(new Date(), "dd MMM");
+  let to = checkout
+    ? format(checkout, "dd MMM")
+    : format(addDays(new Date(), 1), "dd MMM");
   if (dayPicker && dayPicker[0]) {
     from = format(dayPicker[0], "dd MMM");
   }
@@ -120,15 +122,25 @@ export default function SearchRoomsByHotel({ hotelId }: { hotelId: string }) {
                 InputProps={{
                   startAdornment: (
                     <InputAdornment position="start">
-                      <PersonOutlineOutlinedIcon />
+                      <PersonOutlineOutlinedIcon
+                        sx={{ color: "text.primary" }}
+                      />
                     </InputAdornment>
                   ),
                 }}
               >
-                <MenuItem disableRipple value="1 guest" sx={{ pl: "2.9rem" }}>
+                <MenuItem
+                  disableRipple
+                  value="1 guest"
+                  sx={{ pl: "2.9rem", color: "text.primary" }}
+                >
                   1 guest
                 </MenuItem>
-                <MenuItem disableRipple value="2 guests" sx={{ pl: "2.9rem" }}>
+                <MenuItem
+                  disableRipple
+                  value="2 guests"
+                  sx={{ pl: "2.9rem", color: "text.primary" }}
+                >
                   2 guests
                 </MenuItem>
               </TextField>
