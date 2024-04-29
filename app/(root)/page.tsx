@@ -28,7 +28,9 @@ export default function Home() {
           >
             Where are You going to travel next?
           </Typography>
-          <SearchWrapper />
+          <div>
+            <SearchWrapper />
+          </div>
         </HeroImage>
         <Container maxWidth="lg" sx={{ pt: "2rem" }}>
           <Typography variant="h4">Select a hotel</Typography>

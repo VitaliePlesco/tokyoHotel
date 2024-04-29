@@ -50,7 +50,7 @@ export default function SearchRoomsByHotel({ hotelId }: { hotelId: string }) {
     to = format(dayPicker[1], "dd MMM");
   }
 
-  const handleDateRangeChange = (value: Date[]) => {
+  const handleDateRangeChange = async (value: Date[]) => {
     const params = new URLSearchParams(searchParams);
     if (value[0]) {
       params.set("checkin", format(value[0], "y-MM-dd"));

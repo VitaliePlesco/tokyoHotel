@@ -24,7 +24,7 @@ export default function DateRangeSummary({
           display: "flex",
           alignItems: "center",
           whiteSpace: "nowrap",
-          gap: "0.25rem",
+          gap: "0.45rem",
         }}
       >
         <DateRangeOutlinedIcon sx={{ color: "text.primary" }} />

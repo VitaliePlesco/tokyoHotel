@@ -13,10 +13,9 @@ export default function GuestsSummary({
         display: "flex",
         alignItems: "center",
         justifyContent: "space-between",
-        gap: "4rem",
       }}
     >
-      <Box sx={{ display: "flex", alignItems: "center" }}>
+      <Box sx={{ display: "flex", alignItems: "center", gap: "0.25rem" }}>
         <PersonOutlineOutlinedIcon
           sx={{ color: "text.primary", pr: "0.25rem", fontSize: "28px" }}
         />

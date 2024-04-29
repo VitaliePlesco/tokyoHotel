@@ -33,13 +33,14 @@ model ResetPassword {
 }
 
 model Hotel {
-  hotelName      String @id
+  hotelName      String    @id
   city           String
   buildingNumber Int
   streetName     String
   email          String
   phoneNumber    Int
   Room           Room[]
+  Booking        Booking[]
 }
 
 model Room {
@@ -74,6 +75,8 @@ model Booking {
   userId      String
   room        Room     @relation(fields: [roomNumber], references: [roomNumber])
   roomNumber  Int
+  hotel       Hotel    @relation(fields: [hotelId], references: [hotelName])
+  hotelId     String
   payment     Payment?
 }
 

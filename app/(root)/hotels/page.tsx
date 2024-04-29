@@ -1,5 +1,6 @@
 import HeroImage from "@/components/layout/HeroImage";
 import HotelsList from "@/components/layout/hotel/HotelsList";
+import SearchWrapper from "@/components/booking/SearchWrapper";
 
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
@@ -14,9 +15,14 @@ export default function page() {
         >
           Our Hotels
         </Typography>
+        <div>
+          <SearchWrapper />
+        </div>
       </HeroImage>
       <Container>
-        <HotelsList />
+        <div>
+          <HotelsList />
+        </div>
       </Container>
     </div>
   );

@@ -17,7 +17,11 @@ export default async function page({ params }: { params: { id: string } }) {
   const id = decodeURI(params.id);
   const hotel = await fetchHotelById(id);
   const filteredHotel = hotelInfo.filter((hotel) => hotel.hotelName === id);
-  const rooms = await fetchAvailableRooms(id);
+  const rooms = await fetchAvailableRooms(
+    id,
+    new Date("2024-05-12T00:00:00.000Z"),
+    new Date("2024-05-19T00:00:00.000Z")
+  );
 
   if (!hotel) {
     notFound();
@@ -98,7 +102,7 @@ export default async function page({ params }: { params: { id: string } }) {
                     },
                   }}
                 >
-                  <SelectRoom rooms={rooms} />
+                  <SelectRoom rooms={{}} />
                 </Box>
 
                 <Box

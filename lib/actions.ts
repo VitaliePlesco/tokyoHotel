@@ -107,48 +107,45 @@ export type State = {
 }
 
 export async function addRooms(id: string, prevState: State, formData: FormData): Promise<State> {
-  console.log(formData);
-  return {
-    message: `received`
+
+
+  const validateFields = manageRoomsSchema.safeParse({
+    number: parseInt(formData.get("number") as string),
+    type: formData.get("type")
+  });
+
+  if (!validateFields.success) {
+    return {
+      errors: validateFields.error.flatten().fieldErrors,
+      message: "Missing fields. Failed to add rooms."
+    };
   }
 
-  // const validateFields = manageRoomsSchema.safeParse({
-  //   number: parseInt(formData.get("number") as string),
-  //   type: formData.get("type")
-  // });
+  const { number, type } = validateFields.data;
 
-  // if (!validateFields.success) {
-  //   return {
-  //     errors: validateFields.error.flatten().fieldErrors,
-  //     message: "Missing fields. Failed to add rooms."
-  //   };
-  // }
+  const roomCategories = await db.roomType.findMany();
+  const filteredCategory = roomCategories.filter(category => category.roomTypeName === type)
 
-  // const { number, type } = validateFields.data;
+  const rooms = []
+  for (let i = 0; i < number; i++) {
+    rooms.push({
+      roomTypeId: filteredCategory[0].id,
+      hotelId: id
+    })
+  }
 
-  // const roomCategories = await db.roomType.findMany();
-  // const filteredCategory = roomCategories.filter(category => category.roomTypeName === type)
-
-  // const rooms = []
-  // for (let i = 0; i < number; i++) {
-  //   rooms.push({
-  //     roomTypeId: filteredCategory[0].id,
-  //     hotelId: id
-  //   })
-  // }
-
-  // try {
-  //   await db.room.createMany({
-  //     data: rooms
-  //   })
-  //   return {
-  //     message: `Added ${number} rooms`
-  //   }
-  // } catch (error) {
-  //   return {
-  //     message: "Failed to add rooms."
-  //   }
-  // }
+  try {
+    await db.room.createMany({
+      data: rooms
+    })
+    return {
+      message: `Added ${number} rooms`
+    }
+  } catch (error) {
+    return {
+      message: "Failed to add rooms."
+    }
+  }
 
 }
 export async function addCategory(prevState: State, formData: FormData): Promise<State> {
