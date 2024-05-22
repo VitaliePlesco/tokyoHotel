@@ -16,7 +16,7 @@ export default function Home() {
               textAlign: "center",
               fontWeight: "bold",
               color: "white",
-              opacity: "0.8",
+              opacity: "0.95",
               fontSize: {
                 xs: "h4.fontSize",
                 md: "h2.fontSize",

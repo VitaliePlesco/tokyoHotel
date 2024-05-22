@@ -7,7 +7,13 @@ import CardContent from "@mui/material/CardContent";
 import RoomAmenitis from "./RoomAmenitis";
 import RoomRateCard from "./RoomRateCard";
 
-export default function RoomCard() {
+export default function RoomCard({
+  numberOfRooms,
+  roomType,
+}: {
+  numberOfRooms: number;
+  roomType: string;
+}) {
   return (
     <Box
       sx={{
@@ -70,7 +76,7 @@ export default function RoomCard() {
                 fontWeight: "bold",
               }}
             >
-              Double Bed Room
+              {roomType} Bed Room
             </Typography>
             <RoomAmenitis />
           </CardContent>
@@ -78,6 +84,21 @@ export default function RoomCard() {
         <Box sx={{ width: "100%" }}>
           <CardContent>
             <RoomRateCard />
+            <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
+              <Box
+                sx={{
+                  backgroundColor: "orange",
+                  display: "flex",
+                  justifyContent: "center",
+                  alignSelf: "flex-end",
+                  p: "0.5rem 0.75rem",
+                }}
+              >
+                <Typography variant="body1" sx={{ padding: 0 }}>
+                  {numberOfRooms} rooms left
+                </Typography>
+              </Box>
+            </Box>
           </CardContent>
         </Box>
       </Card>

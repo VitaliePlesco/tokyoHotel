@@ -3,7 +3,11 @@ import Typography from "@mui/material/Typography";
 
 import RoomsList from "./RoomsList";
 
-export default function SelectRoom({ rooms }: any) {
+export default function SelectRoom({
+  children,
+}: {
+  children?: React.ReactNode;
+}) {
   return (
     <div>
       <Box
@@ -14,9 +18,7 @@ export default function SelectRoom({ rooms }: any) {
           width: "100%",
         }}
       >
-        <div>
-          <RoomsList rooms={rooms} />
-        </div>
+        <div>{children}</div>
       </Box>
     </div>
   );

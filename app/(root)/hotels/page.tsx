@@ -19,7 +19,8 @@ export default function page() {
           <SearchWrapper />
         </div>
       </HeroImage>
-      <Container>
+      <Container sx={{ pt: "2rem" }}>
+        <Typography variant="h4">Hotels</Typography>
         <div>
           <HotelsList />
         </div>

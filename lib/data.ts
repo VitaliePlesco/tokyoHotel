@@ -1,7 +1,7 @@
 import { db } from "@/lib/db";
 
 import { unstable_noStore as noStore } from "next/cache";
-import { DateRange } from "react-day-picker";
+import { addDays, subDays } from "date-fns";
 
 export async function fetchHotels() {
   try {
@@ -58,31 +58,70 @@ export async function fetchAvailableRooms(
 ) {
   noStore();
   try {
-    const bookings = await db.booking.findMany();
-    // const roomNs = await db.room.findMany({
-    //   where: {
-    //     hotelId: hotelId,
-    //   },
-    //   select: {
-    //     roomNumber: true,
-    //   },
-    // });
-    // console.log(roomNs);
     const reservations = await db.booking.findMany({
       where: {
-        startDate: {
-          gte: startDate,
-        },
-        endDate: {
-          lte: endDate,
-        },
+        hotelId: hotelId,
+        OR: [
+          {
+            endDate: {
+              lte: startDate,
+              gte: subDays(startDate, 7),
+            },
+          },
+        ],
+        NOT: {
+          OR: [
+            {
+              startDate: {
+                gte: startDate,
+                lte: endDate,
+              },
+            },
+            {
+              endDate: {
+                gt: startDate,
+                lte: endDate,
+              },
+            },
+          ],
+        }
       },
       orderBy: {
-        startDate: "asc",
+        endDate: "desc",
+      },
+      include: {
+        room: true,
       },
     });
-    console.log(reservations, "reservation");
-    // return availableRooms;
+
+    const vacantRooms = await db.room.findMany({
+      where: {
+        hotelId: hotelId,
+
+        Booking: {
+          some: {
+            OR: [
+              {
+                startDate: {
+                  gte: startDate,
+                  lte: endDate,
+                },
+              },
+              {
+                endDate: {
+                  gt: startDate,
+                  lte: endDate,
+                },
+              },
+            ],
+          },
+        },
+      },
+    });
+
+
+
+    return [...reservations.map((room) => room.room), ...vacantRooms];
   } catch (error) {
     throw new Error("Failed to fetch available rooms.");
   }

@@ -12,6 +12,8 @@ import SearchRoomsByHotel from "@/components/booking/SearchRoomsByHotel";
 import SelectRoom from "@/components/layout/room/SelectRoom";
 import Basket from "@/components/layout/basket/Basket";
 import MobileBasket from "@/components/layout/basket/MobileBasket";
+import RoomsList from "@/components/layout/room/RoomsList";
+import RoomCard from "@/components/layout/room/RoomCard";
 
 export default async function page({ params }: { params: { id: string } }) {
   const id = decodeURI(params.id);
@@ -22,6 +24,10 @@ export default async function page({ params }: { params: { id: string } }) {
     new Date("2024-05-12T00:00:00.000Z"),
     new Date("2024-05-19T00:00:00.000Z")
   );
+
+  // if (rooms.length !== 0) {
+  //   console.log(JSON.stringify(rooms, null, 2));
+  // }
 
   if (!hotel) {
     notFound();
@@ -102,7 +108,9 @@ export default async function page({ params }: { params: { id: string } }) {
                     },
                   }}
                 >
-                  <SelectRoom rooms={{}} />
+                  <SelectRoom>
+                    <RoomsList rooms={rooms}></RoomsList>
+                  </SelectRoom>
                 </Box>
 
                 <Box
