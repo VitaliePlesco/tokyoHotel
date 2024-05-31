@@ -11,15 +11,36 @@ import { addDays, format } from "date-fns";
 import DateRangeCalendar from "./DateRangeCalendar";
 import { useUrlParams } from "@/lib/hooks/useUrlParams";
 
+import { useRoomsStore } from "@/stores/roomsStore";
+
 import { useForm, Controller } from "react-hook-form";
-import { ChangeEvent } from "react";
+import { ChangeEvent, useEffect } from "react";
 
 export default function SearchRoomsByHotel({ hotelId }: { hotelId: string }) {
   const pathname = usePathname();
   const { replace } = useRouter();
 
   const searchParams = useSearchParams();
+  const { fetchVacantRooms, rooms } = useRoomsStore();
 
+  const {
+    hotel: hotel,
+    checkin: startDate,
+    checkout: endDate,
+  } = useUrlParams();
+
+  useEffect(() => {
+    setTimeout(() => {
+      fetchVacantRooms(hotel, new Date(startDate), new Date(endDate));
+    }, 2000);
+  }, [fetchVacantRooms, hotel, startDate, endDate]);
+
+  if (rooms.length !== 0) {
+    console.log(rooms, "rooms");
+  }
+
+  // let one = 1;
+  // console.log(one + 1);
   // Set default search state in URL
   if (
     !searchParams.get("hotel") &&

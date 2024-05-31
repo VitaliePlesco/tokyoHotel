@@ -11,8 +11,6 @@ export async function POST(req: Request) {
   const body = await req.json();
   const { email } = body;
 
-
-
   const user = await db.user.findUnique({
     where: {
       email: email
@@ -37,7 +35,6 @@ export async function POST(req: Request) {
   })
 
   const message = `
-
       <h2>Password reset for ${email}</h2>
       <a href="http://localhost:3000/auth/changepassword?token=${resetPasswordToken}">Click here to reset your password</a>`;
 
@@ -46,15 +43,10 @@ export async function POST(req: Request) {
       email: email,
       subject: "Password reset",
       text: message
-
     });
-
-
 
     return NextResponse.json({ message: "success" }, { status: 200 });
   } catch (error) {
-
-    console.log(error)
     return NextResponse.json({ error });
   }
 }

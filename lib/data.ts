@@ -120,7 +120,7 @@ export async function fetchAvailableRooms(
     });
 
 
-
+    // console.log([...reservations.map((room) => room.room), ...vacantRooms]);
     return [...reservations.map((room) => room.room), ...vacantRooms];
   } catch (error) {
     throw new Error("Failed to fetch available rooms.");
