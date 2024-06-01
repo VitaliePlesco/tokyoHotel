@@ -39,23 +39,6 @@ export default function SearchRoomsByHotel({ hotelId }: { hotelId: string }) {
     console.log(rooms, "rooms");
   }
 
-  // let one = 1;
-  // console.log(one + 1);
-  // Set default search state in URL
-  if (
-    !searchParams.get("hotel") &&
-    !searchParams.get("checkin") &&
-    !searchParams.get("checkout") &&
-    !searchParams.get("guests")
-  ) {
-    const params = new URLSearchParams(searchParams);
-    params.set("hotel", hotelId);
-    params.set("checkin", format(new Date(), "y-MM-dd"));
-    params.set("checkout", format(addDays(new Date(), 1), "y-MM-dd"));
-    params.set("guests", "1 guest");
-    replace(`${pathname}?${params.toString()}`, { scroll: false });
-  }
-
   const { checkin, checkout, guests } = useUrlParams();
   const { control, watch } = useForm();
 

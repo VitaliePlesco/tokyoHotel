@@ -18,7 +18,12 @@ export type CartState = {
 
 export type CartActions = {
   setHotel: () => void;
+  setTimeStamp: () => void;
+  setStartDate: () => void;
+  setEndDate: () => void;
+  setUser: () => void;
   addToCart: (roomNumber: number) => void;
+
 }
 
 export const initialCartState: CartState = {
@@ -36,6 +41,10 @@ export const useCartStore = create<CartState & CartActions>((set) => ({
   setHotel: () => console.log("hotel"),
   addToCart: (roomNumber: number) => {
     console.log("hello");
-  }
+  },
+  setTimeStamp: () => console.log("set time stamp"),
+  setEndDate: () => console.log("set start date"),
+  setStartDate: () => console.log("set end date"),
+  setUser: () => console.log("set user id")
 
 }))

@@ -74,9 +74,7 @@ export async function GET(req: NextRequest) {
       },
     });
 
-    // console.log([...vacantRooms], "route");
-    // console.log([...reservations], "res");
-    console.log([...reservations.map((room) => room.room), ...vacantRooms], "res");
+
     return NextResponse.json([...reservations.map((room) => room.room), ...vacantRooms], { status: 200 });
   } catch (error) {
 
