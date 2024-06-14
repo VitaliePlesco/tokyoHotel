@@ -23,6 +23,7 @@ export default function GuestsSummary({
           sx={{
             color: "text.primary",
             whiteSpace: "nowrap",
+            fontSize: "1.2rem",
           }}
         >
           {numberOfGuests}

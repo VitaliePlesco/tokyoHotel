@@ -11,36 +11,21 @@ import { addDays, format } from "date-fns";
 import DateRangeCalendar from "./DateRangeCalendar";
 import { useUrlParams } from "@/lib/hooks/useUrlParams";
 
-import { useRoomsStore } from "@/stores/roomsStore";
-
 import { useForm, Controller } from "react-hook-form";
 import { ChangeEvent, useEffect } from "react";
+import { useRenderCount } from "@/lib/hooks/useRender";
+import { useCartStore } from "@/stores/cartStore";
 
 export default function SearchRoomsByHotel({ hotelId }: { hotelId: string }) {
+  useRenderCount("search");
+  console.log("search by hotel");
   const pathname = usePathname();
   const { replace } = useRouter();
-
-  const searchParams = useSearchParams();
-  const { fetchVacantRooms, rooms } = useRoomsStore();
-
-  const {
-    hotel: hotel,
-    checkin: startDate,
-    checkout: endDate,
-  } = useUrlParams();
-
-  useEffect(() => {
-    setTimeout(() => {
-      fetchVacantRooms(hotel, new Date(startDate), new Date(endDate));
-    }, 2000);
-  }, [fetchVacantRooms, hotel, startDate, endDate]);
-
-  if (rooms.length !== 0) {
-    console.log(rooms, "rooms");
-  }
-
-  const { checkin, checkout, guests } = useUrlParams();
   const { control, watch } = useForm();
+  const searchParams = useSearchParams();
+
+  const { hotel, checkin, checkout, guests } = useUrlParams();
+  const { removeFromCart } = useCartStore();
 
   const dayPicker = watch("dayPicker");
   let from = checkin ? format(checkin, "dd MMM") : format(new Date(), "dd MMM");
@@ -63,6 +48,7 @@ export default function SearchRoomsByHotel({ hotelId }: { hotelId: string }) {
       params.set("checkout", format(value[1], "y-MM-dd"));
     }
     replace(`${pathname}?${params.toString()}`, { scroll: false });
+    removeFromCart();
   };
 
   const handleChange = (

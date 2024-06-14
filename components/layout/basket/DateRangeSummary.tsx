@@ -28,7 +28,7 @@ export default function DateRangeSummary({
         }}
       >
         <DateRangeOutlinedIcon sx={{ color: "text.primary" }} />
-        <Typography sx={{ color: "text.primary" }}>
+        <Typography sx={{ color: "text.primary", fontSize: "1.2rem" }}>
           {checkin} &#8594; {checkout}
         </Typography>
       </Box>
@@ -37,7 +37,9 @@ export default function DateRangeSummary({
           whiteSpace: "nowrap",
         }}
       >
-        <Typography variant="body1">{numberOfNights} nights</Typography>
+        <Typography variant="body2" sx={{ pr: "0.25rem" }}>
+          {numberOfNights} nights
+        </Typography>
       </Box>
     </Box>
   );

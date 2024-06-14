@@ -1,8 +1,10 @@
 "use client";
+import { useCartStore } from "@/stores/cartStore";
 import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
 import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
+
 import { addDays, format } from "date-fns";
 import Link from "next/link";
 
@@ -12,15 +14,21 @@ type HotelCardProps = {
 };
 
 export default function HotelCard({ title, img }: HotelCardProps) {
+  const { setHotel } = useCartStore();
+
   const params = new URLSearchParams({
     hotel: title,
     checkin: format(new Date(), "y-MM-dd"),
     checkout: format(addDays(new Date(), 1), "y-MM-dd"),
     guests: "1 guest",
   });
+
   return (
     <Box component={Link} href={`/hotels/${title}?${params}`}>
-      <Card sx={{ position: "relative", height: "240px" }}>
+      <Card
+        onClick={() => setHotel(title)}
+        sx={{ position: "relative", height: "240px" }}
+      >
         <Box
           sx={{
             position: "absolute",

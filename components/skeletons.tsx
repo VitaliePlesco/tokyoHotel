@@ -100,3 +100,31 @@ export function HotelsTableSkeleton() {
     </Box>
   );
 }
+
+export function RoomListSkeleton() {
+  return (
+    <Box
+      sx={{
+        height: "370px",
+        backgroundColor: "#fff",
+        p: {
+          xs: "0.75rem",
+          md: "1.25rem",
+        },
+      }}
+    >
+      <Box
+        sx={{
+          p: {
+            xs: "0.75rem",
+            md: "1.25rem",
+            backgroundColor: "#eeeff2",
+            width: "100%",
+            height: "100%",
+            borderRadius: "0.3125rem",
+          },
+        }}
+      ></Box>
+    </Box>
+  );
+}

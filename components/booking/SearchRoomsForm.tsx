@@ -12,14 +12,13 @@ import { useRouter } from "next/navigation";
 import { format } from "date-fns";
 import DateRangeCalendar from "./DateRangeCalendar";
 
-import { useUrlParams } from "@/lib/hooks/useUrlParams";
-
 import { useForm, Controller } from "react-hook-form";
 import { Hotel } from "@prisma/client";
+import { useCartStore } from "@/stores/cartStore";
 
 export default function SearchRoomsForm({ hotels }: { hotels: Hotel[] }) {
   const router = useRouter();
-
+  const { setHotel, setStartDate, setEndDate } = useCartStore();
   const { control, handleSubmit, getValues, watch } = useForm();
 
   const submit = () => {

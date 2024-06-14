@@ -1,50 +1,63 @@
 import { db } from "@/lib/db";
 import { create } from "zustand";
+import { persist } from 'zustand/middleware'
+import { Room } from "./roomsStore";
+
 import { Booking } from "@prisma/client";
 import { fetchAvailableRooms } from "@/lib/data";
-import { subDays } from "date-fns";
+import { addDays, format, subDays } from "date-fns";
+import { staticGenerationAsyncStorage } from "next/dist/client/components/static-generation-async-storage.external";
 
 
 export type CartState = {
   id: string;
-  hotelId: string;
-  bookingDate: Date;
-  startDate: Date;
-  endDate: Date;
+  hotelName: string;
+  bookingDate: Date | string;
+  startDate: Date | string;
+  endDate: Date | string;
   userId: string;
-  roomNumber: number;
+  room: [Room] | [];
 
 }
 
+
 export type CartActions = {
-  setHotel: () => void;
+  setHotel: (hotel: string) => void;
   setTimeStamp: () => void;
-  setStartDate: () => void;
-  setEndDate: () => void;
+  setStartDate: (startDate: string) => void;
+  setEndDate: (endDate: string) => void;
   setUser: () => void;
-  addToCart: (roomNumber: number) => void;
+  addToCart: (roomNumber: [Room]) => void;
+  removeFromCart: () => void;
 
 }
 
 export const initialCartState: CartState = {
   id: "",
-  hotelId: "",
-  bookingDate: new Date,
-  startDate: new Date,
-  endDate: new Date,
+  hotelName: "",
+  bookingDate: "",
+  startDate: "",
+  endDate: "",
   userId: "",
-  roomNumber: 0,
+  room: [],
 }
 
-export const useCartStore = create<CartState & CartActions>((set) => ({
+export const useCartStore = create<CartState & CartActions>()(persist(set => ({
   ...initialCartState,
-  setHotel: () => console.log("hotel"),
-  addToCart: (roomNumber: number) => {
-    console.log("hello");
+  setHotel: (hotel) => set(() => ({ hotelName: hotel })),
+  addToCart: (room: [Room]) => {
+    set(() => ({ room: room }))
+  },
+  removeFromCart: () => {
+    set(() => ({ room: [] }))
   },
   setTimeStamp: () => console.log("set time stamp"),
-  setEndDate: () => console.log("set start date"),
-  setStartDate: () => console.log("set end date"),
+  setStartDate: (startDate) => set(() => ({ startDate: startDate })),
+  setEndDate: (endDate) => set(() => ({ endDate: endDate })),
   setUser: () => console.log("set user id")
 
-}))
+}),
+  { name: "cartStore" }
+))
+
+

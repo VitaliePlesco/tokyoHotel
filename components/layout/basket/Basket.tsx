@@ -1,30 +1,51 @@
 "use client";
-import Card from "@mui/material/Card";
 import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
-import DateRangeOutlinedIcon from "@mui/icons-material/DateRangeOutlined";
-import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";
 import Button from "@mui/material/Button";
-import { useSearchParams } from "next/navigation";
+import Divider from "@mui/material/Divider";
 import { format, differenceInCalendarDays } from "date-fns";
-
+import RoomSummary from "./RoomSummary";
 import DateRangeSummary from "./DateRangeSummary";
 import GuestsSummary from "./GuestsSummary";
+import { useCartStore } from "@/stores/cartStore";
+import Total from "./Total";
+import { useUrlParams } from "@/lib/hooks/useUrlParams";
+import { useRoomsStore } from "@/stores/roomsStore";
 
 export default function Basket() {
-  const searchParams = useSearchParams();
+  const room = useCartStore((state) => state.room);
+  const { roomType } = useRoomsStore();
+  const { checkin, checkout, guests: numberOfGuests } = useUrlParams();
 
-  const paramsFrom = searchParams.get("checkin");
-  const checkin = paramsFrom ? format(paramsFrom, "dd MMM") : "Checkin";
-  const paramsTo = searchParams.get("checkout");
-  const checkout = paramsTo ? format(paramsTo, "dd MMM") : "Checkin";
-
-  const numberOfGuests = searchParams.get("guests");
+  const from = checkin ? format(checkin, "dd MMM") : "Checkin";
+  const to = checkout ? format(checkout, "dd MMM") : "Checkin";
 
   const numberOfNights = differenceInCalendarDays(
-    new Date(paramsTo || 0),
-    new Date(paramsFrom || 0)
+    new Date(checkout || 0),
+    new Date(checkin || 0)
   );
+
+  let roomStats = <></>;
+  if (room.length !== 0) {
+    const totalStayCost =
+      (roomType[room[0]?.roomTypeId - 1]?.roomPrice * numberOfNights) / 100;
+    console.log(room[0].roomTypeId);
+    roomStats = (
+      <>
+        <Divider />
+        <RoomSummary
+          totalStay={totalStayCost}
+          numberOfNights={numberOfNights}
+        />
+        <Divider />
+        <Total totalStay={totalStayCost} />
+        <Divider />
+        <Button variant="contained" disableRipple>
+          Book now
+        </Button>
+      </>
+    );
+  }
+
   return (
     <div>
       <Box
@@ -42,19 +63,30 @@ export default function Basket() {
           flexDirection: "column",
           gap: {
             xs: "none",
-            lg: "1.5rem",
+            lg: "1.125rem",
           },
         }}
       >
         <DateRangeSummary
-          checkin={checkin}
-          checkout={checkout}
+          checkin={from}
+          checkout={to}
           numberOfNights={numberOfNights}
         />
+        <Divider />
         <GuestsSummary numberOfGuests={numberOfGuests} />
-        <Button variant="contained" disableRipple>
-          Book now
-        </Button>
+        {/* {room.length !== 0 && (
+          <>
+            <Divider />
+            <RoomSummary selectedRoom={room} />
+            <Divider />
+            <Total />
+            <Divider />
+            <Button variant="contained" disableRipple>
+              Book now
+            </Button>
+          </>
+        )} */}
+        {room && roomStats}
       </Box>
     </div>
   );

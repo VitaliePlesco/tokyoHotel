@@ -1,9 +1,7 @@
-import { db } from "@/lib/db";
 import { create } from "zustand";
-import { Booking } from "@prisma/client";
-import { format, subDays } from "date-fns";
+import { RoomType } from "@prisma/client";
 
-type Room = {
+export type Room = {
   roomNumber: number;
   roomStatus: string;
   hotelId: string;
@@ -12,35 +10,28 @@ type Room = {
 
 type RoomsState = {
   rooms: Room[];
-  isLoading: boolean;
-  error: Error | null;
+  roomType: RoomType[];
 }
 
 type RoomsActions = {
-  fetchVacantRooms: (hotelId: string, startDate: Date, endDate: Date) => Promise<void>;
+  setRoomsAndRoomType: (rooms: Room[], roomType: RoomType[]) => void;
 }
 
-
-
-export const useRoomsStore = create<RoomsState & RoomsActions>((set) => ({
+export const useRoomsStore = create<RoomsState & RoomsActions>()((set) => ({
   rooms: [],
-  isLoading: false,
-  error: null,
-  fetchVacantRooms: async (hotel, startDate, endDate) => {
-    try {
-      const queryParams = new URLSearchParams({ hotel: hotel, checkin: format(startDate, "y-MM-dd"), checkout: format(endDate, "y-MM-dd") })
+  roomType: [],
+  setRoomsAndRoomType: (rooms: Room[], roomType: RoomType[]) => {
+    set({ rooms });
+    set({ roomType });
+  }
+}));
 
-      set({ isLoading: true, error: null });
-      const result = await fetch("/api/getRooms/?" + queryParams, {
-        method: "GET",
+async function get<T>(url: string): Promise<T> {
+  const response = await fetch(`${url}`);
 
-      }).then((response) => response.json());
+  if (!response.ok) {
+    throw new Error("Network response was not ok");
+  }
 
-      set({ rooms: result, isLoading: false })
-
-    } catch (error) {
-      set({ error: new Error, isLoading: false })
-
-    }
-  },
-}))
+  return await response.json() as Promise<T>;
+}
