@@ -2,7 +2,6 @@ import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 
-import { Room, useRoomsStore } from "@/stores/roomsStore";
 import { useCartStore } from "@/stores/cartStore";
 
 export default function RoomSummary({

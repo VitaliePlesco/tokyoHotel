@@ -1,12 +1,8 @@
-import { db } from "@/lib/db";
 import { create } from "zustand";
 import { persist } from 'zustand/middleware'
 import { Room } from "./roomsStore";
 
-import { Booking } from "@prisma/client";
-import { fetchAvailableRooms } from "@/lib/data";
-import { addDays, format, subDays } from "date-fns";
-import { staticGenerationAsyncStorage } from "next/dist/client/components/static-generation-async-storage.external";
+
 
 
 export type CartState = {

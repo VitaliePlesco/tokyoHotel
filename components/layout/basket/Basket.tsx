@@ -28,7 +28,7 @@ export default function Basket() {
   if (room.length !== 0) {
     const totalStayCost =
       (roomType[room[0]?.roomTypeId - 1]?.roomPrice * numberOfNights) / 100;
-    console.log(room[0].roomTypeId);
+
     roomStats = (
       <>
         <Divider />
@@ -74,18 +74,7 @@ export default function Basket() {
         />
         <Divider />
         <GuestsSummary numberOfGuests={numberOfGuests} />
-        {/* {room.length !== 0 && (
-          <>
-            <Divider />
-            <RoomSummary selectedRoom={room} />
-            <Divider />
-            <Total />
-            <Divider />
-            <Button variant="contained" disableRipple>
-              Book now
-            </Button>
-          </>
-        )} */}
+
         {room && roomStats}
       </Box>
     </div>

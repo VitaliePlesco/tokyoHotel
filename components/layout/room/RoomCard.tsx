@@ -3,9 +3,7 @@ import Card from "@mui/material/Card";
 import Typography from "@mui/material/Typography";
 import CardMedia from "@mui/material/CardMedia";
 import CardContent from "@mui/material/CardContent";
-
 import RoomAmenitis from "./RoomAmenitis";
-import RoomRateCard from "./RoomRateCard";
 import { RoomType } from "@prisma/client";
 
 export default function RoomCard({
