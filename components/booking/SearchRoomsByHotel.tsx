@@ -17,8 +17,6 @@ import { useRenderCount } from "@/lib/hooks/useRender";
 import { useCartStore } from "@/stores/cartStore";
 
 export default function SearchRoomsByHotel({ hotelId }: { hotelId: string }) {
-  useRenderCount("search");
-  console.log("search by hotel");
   const pathname = usePathname();
   const { replace } = useRouter();
   const { control, watch } = useForm();

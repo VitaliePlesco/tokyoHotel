@@ -28,7 +28,6 @@ export default function RoomRateCard({
 
   const handleAddToCart = () => {
     addToCart([room]);
-    console.log([room]);
   };
 
   return (

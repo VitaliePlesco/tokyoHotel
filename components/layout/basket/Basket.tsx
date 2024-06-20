@@ -47,36 +47,27 @@ export default function Basket() {
   }
 
   return (
-    <div>
-      <Box
-        sx={{
-          bgcolor: "white",
-          border: "1px solid #bdbdbd",
-          borderRadius: "0.3125rem",
-          p: 2,
-          width: "100%",
-          display: {
-            xs: "none",
-            lg: "flex",
-          },
+    <Box
+      sx={{
+        bgcolor: "white",
+        border: "1px solid #bdbdbd",
+        borderRadius: "0.3125rem",
+        p: 2,
+        width: "100%",
+        display: "flex",
+        flexDirection: "column",
+        gap: "1.125rem",
+      }}
+    >
+      <DateRangeSummary
+        checkin={from}
+        checkout={to}
+        numberOfNights={numberOfNights}
+      />
+      <Divider />
+      <GuestsSummary numberOfGuests={numberOfGuests} />
 
-          flexDirection: "column",
-          gap: {
-            xs: "none",
-            lg: "1.125rem",
-          },
-        }}
-      >
-        <DateRangeSummary
-          checkin={from}
-          checkout={to}
-          numberOfNights={numberOfNights}
-        />
-        <Divider />
-        <GuestsSummary numberOfGuests={numberOfGuests} />
-
-        {room && roomStats}
-      </Box>
-    </div>
+      {room && roomStats}
+    </Box>
   );
 }

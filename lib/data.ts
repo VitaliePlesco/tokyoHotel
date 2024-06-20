@@ -1,7 +1,7 @@
 import { db } from "@/lib/db";
 
 import { unstable_noStore as noStore } from "next/cache";
-import { addDays, subDays } from "date-fns";
+import { subDays } from "date-fns";
 
 export async function fetchHotels() {
   try {
@@ -120,7 +120,7 @@ export async function fetchAvailableRooms(
     });
 
 
-    // console.log([...reservations.map((room) => room.room), ...vacantRooms]);
+
     return [...reservations.map((room) => room.room), ...vacantRooms];
   } catch (error) {
     throw new Error("Failed to fetch available rooms.");

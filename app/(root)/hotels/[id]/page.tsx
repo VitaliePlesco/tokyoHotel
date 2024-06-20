@@ -1,30 +1,19 @@
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
-
 import { notFound } from "next/navigation";
-
 import { fetchHotelById } from "@/lib/data";
-import { fetchAvailableRooms } from "@/lib/data";
 import { hotelInfo } from "@/lib/placeholder-data";
-
 import SearchRoomsByHotel from "@/components/booking/SearchRoomsByHotel";
 import SelectRoom from "@/components/layout/room/SelectRoom";
 import Basket from "@/components/layout/basket/Basket";
 import MobileBasket from "@/components/layout/basket/MobileBasket";
 import RoomsList from "@/components/layout/room/RoomsList";
-import RoomCard from "@/components/layout/room/RoomCard";
-import { Suspense } from "react";
 
 export default async function page({ params }: { params: { id: string } }) {
   const id = decodeURI(params.id);
   const hotel = await fetchHotelById(id);
   const filteredHotel = hotelInfo.filter((hotel) => hotel.hotelName === id);
-  const rooms = await fetchAvailableRooms(
-    id,
-    new Date("2024-05-12T00:00:00.000Z"),
-    new Date("2024-05-19T00:00:00.000Z")
-  );
 
   if (!hotel) {
     notFound();
@@ -115,9 +104,13 @@ export default async function page({ params }: { params: { id: string } }) {
                     width: {
                       lg: "30%",
                     },
-                    bgcolor: "lightblue",
+
                     position: "sticky",
                     top: "2rem",
+                    display: {
+                      xs: "none",
+                      lg: "flex",
+                    },
                   }}
                 >
                   <Basket />

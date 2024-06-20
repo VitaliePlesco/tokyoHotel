@@ -15,6 +15,8 @@ export default function RoomCard({
 }) {
   return (
     <Box
+      component="div"
+      id="room-card"
       sx={{
         p: {
           xs: "0.75rem",

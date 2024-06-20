@@ -3,7 +3,7 @@ import Box from "@mui/material/Box";
 import RoomCard from "./RoomCard";
 import { useRoomsStore } from "@/stores/roomsStore";
 import { useUrlParams } from "@/lib/hooks/useUrlParams";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import RoomRateCard from "./RoomRateCard";
 import { RoomListSkeleton } from "@/components/skeletons";
 
@@ -33,9 +33,6 @@ export default function RoomsList() {
 
   const twinRooms = rooms.filter((room) => room.roomTypeId === 1);
   const doubleRooms = rooms.filter((room) => room.roomTypeId === 2);
-  console.log(doubleRooms, "double");
-  console.log(twinRooms, "twin");
-  console.log(roomType);
 
   if (rooms.length === 0) {
     return <RoomListSkeleton />;

@@ -17,6 +17,7 @@ export default function DateRangeSummary({
         display: "flex",
         alignItems: "center",
         justifyContent: "space-between",
+        width: "100%",
       }}
     >
       <Box

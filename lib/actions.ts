@@ -1,10 +1,9 @@
 "use server";
 import { db } from "@/lib/db";
-import { z } from "zod";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { hotelSchema, manageRoomsSchema } from "./validations/hotelSchemas";
-import { RoomType } from "@prisma/client";
+
 
 export async function createHotel(formData: FormData) {
   const { hotelName, city, buildingNumber, streetName, email, phoneNumber } = {
