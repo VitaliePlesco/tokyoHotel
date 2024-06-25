@@ -77,7 +77,7 @@ export default function RoomCard({
                 fontWeight: "bold",
               }}
             >
-              {roomType.roomTypeName} Bed Room
+              {roomType?.roomTypeName} Bed Room
             </Typography>
             <RoomAmenitis />
           </CardContent>

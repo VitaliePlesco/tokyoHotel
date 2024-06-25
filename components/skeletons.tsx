@@ -101,7 +101,7 @@ export function HotelsTableSkeleton() {
   );
 }
 
-export function RoomListSkeleton() {
+export function RoomListSkeleton({ message }: { message?: string }) {
   return (
     <Box
       sx={{
@@ -124,7 +124,9 @@ export function RoomListSkeleton() {
             borderRadius: "0.3125rem",
           },
         }}
-      ></Box>
+      >
+        <h5>{message}</h5>
+      </Box>
     </Box>
   );
 }

@@ -12,17 +12,12 @@ import { useUrlParams } from "@/lib/hooks/useUrlParams";
 import { useRoomsStore } from "@/stores/roomsStore";
 
 export default function Basket() {
-  const room = useCartStore((state) => state.room);
+  const { room, numberOfNights } = useCartStore();
   const { roomType } = useRoomsStore();
   const { checkin, checkout, guests: numberOfGuests } = useUrlParams();
 
   const from = checkin ? format(checkin, "dd MMM") : "Checkin";
   const to = checkout ? format(checkout, "dd MMM") : "Checkin";
-
-  const numberOfNights = differenceInCalendarDays(
-    new Date(checkout || 0),
-    new Date(checkin || 0)
-  );
 
   let roomStats = <></>;
   if (room.length !== 0) {

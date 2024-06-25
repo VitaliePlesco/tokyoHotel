@@ -9,7 +9,8 @@ export type Room = {
 }
 
 type RoomsState = {
-  rooms: Room[];
+  twinRooms: Room[];
+  doubleRooms: Room[];
   roomType: RoomType[];
 }
 
@@ -18,10 +19,12 @@ type RoomsActions = {
 }
 
 export const useRoomsStore = create<RoomsState & RoomsActions>()((set) => ({
-  rooms: [],
+  twinRooms: [],
+  doubleRooms: [],
   roomType: [],
   setRoomsAndRoomType: (rooms: Room[], roomType: RoomType[]) => {
-    set({ rooms });
+    set({ twinRooms: rooms.filter((room) => room.roomTypeId === 1) });
+    set({ doubleRooms: rooms.filter((room) => room.roomTypeId === 2) });
     set({ roomType });
   }
 }));

@@ -9,7 +9,7 @@ import InputAdornment from "@mui/material/InputAdornment";
 import ApartmentIcon from "@mui/icons-material/Apartment";
 import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";
 import { useRouter } from "next/navigation";
-import { format } from "date-fns";
+import { differenceInCalendarDays, format } from "date-fns";
 import DateRangeCalendar from "./DateRangeCalendar";
 
 import { useForm, Controller } from "react-hook-form";
@@ -18,7 +18,8 @@ import { useCartStore } from "@/stores/cartStore";
 
 export default function SearchRoomsForm({ hotels }: { hotels: Hotel[] }) {
   const router = useRouter();
-  const { setHotel, setStartDate, setEndDate } = useCartStore();
+  const { setHotel, setStartDate, setEndDate, setNumberOfNights } =
+    useCartStore();
   const { control, handleSubmit, getValues, watch } = useForm();
 
   const submit = () => {
@@ -31,6 +32,15 @@ export default function SearchRoomsForm({ hotels }: { hotels: Hotel[] }) {
       checkout: format(checkout, "y-MM-dd"),
       guests,
     });
+    setStartDate(format(checkin, "y-MM-dd"));
+    setEndDate(format(checkout, "y-MM-dd"));
+
+    const numberOfNights = differenceInCalendarDays(
+      new Date(checkout),
+      new Date(checkin)
+    );
+
+    setNumberOfNights(numberOfNights);
 
     router.push(`hotels/${hotel}?${params.toString()}`);
   };

@@ -5,7 +5,7 @@ import Card from "@mui/material/Card";
 import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
 
-import { addDays, format } from "date-fns";
+import { addDays, differenceInCalendarDays, format } from "date-fns";
 import Link from "next/link";
 
 type HotelCardProps = {
@@ -14,7 +14,9 @@ type HotelCardProps = {
 };
 
 export default function HotelCard({ title, img }: HotelCardProps) {
-  const { setHotel } = useCartStore();
+  const { setHotel, setNumberOfNights } = useCartStore();
+  const setStartDate = useCartStore((state) => state.setStartDate);
+  const setEndDate = useCartStore((state) => state.setEndDate);
 
   const params = new URLSearchParams({
     hotel: title,
@@ -23,10 +25,22 @@ export default function HotelCard({ title, img }: HotelCardProps) {
     guests: "1 guest",
   });
 
+  const handleOnCardClick = () => {
+    setHotel(title);
+    setStartDate(format(new Date(), "y-MM-dd"));
+    setEndDate(format(addDays(new Date(), 1), "y-MM-dd"));
+    const numberOfNights = differenceInCalendarDays(
+      new Date(format(addDays(new Date(), 1), "y-MM-dd")),
+      new Date(format(new Date(), "y-MM-dd"))
+    );
+
+    setNumberOfNights(numberOfNights);
+  };
+
   return (
     <Box component={Link} href={`/hotels/${title}?${params}`}>
       <Card
-        onClick={() => setHotel(title)}
+        onClick={handleOnCardClick}
         sx={{ position: "relative", height: "240px" }}
       >
         <Box

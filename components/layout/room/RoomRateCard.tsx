@@ -4,27 +4,17 @@ import Card from "@mui/material/Card";
 import Typography from "@mui/material/Typography";
 import CardContent from "@mui/material/CardContent";
 import Button from "@mui/material/Button";
-import { useUrlParams } from "@/lib/hooks/useUrlParams";
 import { useCartStore } from "@/stores/cartStore";
 import { Room } from "@/stores/roomsStore";
-import { RoomType } from "@prisma/client";
-import { differenceInCalendarDays } from "date-fns";
 
 export default function RoomRateCard({
   room,
-  roomType,
+  totalStayCost,
 }: {
   room: Room;
-  roomType: RoomType;
+  totalStayCost: number;
 }) {
   const { addToCart } = useCartStore();
-  const { checkin, checkout } = useUrlParams();
-  const numberOfNights = differenceInCalendarDays(
-    new Date(checkout || 0),
-    new Date(checkin || 0)
-  );
-
-  const totalStayCost = (roomType.roomPrice * numberOfNights) / 100;
 
   const handleAddToCart = () => {
     addToCart([room]);

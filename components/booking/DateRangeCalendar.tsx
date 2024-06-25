@@ -11,6 +11,7 @@ import { Controller, Control } from "react-hook-form";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import "./datePicker.css";
+import { format } from "date-fns";
 
 export default function DateRangeCalendar({
   control,

@@ -5,15 +5,12 @@ import MenuItem from "@mui/material/MenuItem";
 import Paper from "@mui/material/Paper";
 import InputAdornment from "@mui/material/InputAdornment";
 import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";
-
 import { useSearchParams, usePathname, useRouter } from "next/navigation";
-import { addDays, format } from "date-fns";
+import { addDays, differenceInCalendarDays, format } from "date-fns";
 import DateRangeCalendar from "./DateRangeCalendar";
 import { useUrlParams } from "@/lib/hooks/useUrlParams";
-
 import { useForm, Controller } from "react-hook-form";
-import { ChangeEvent, useEffect } from "react";
-import { useRenderCount } from "@/lib/hooks/useRender";
+import { ChangeEvent } from "react";
 import { useCartStore } from "@/stores/cartStore";
 
 export default function SearchRoomsByHotel({ hotelId }: { hotelId: string }) {
@@ -24,6 +21,8 @@ export default function SearchRoomsByHotel({ hotelId }: { hotelId: string }) {
 
   const { hotel, checkin, checkout, guests } = useUrlParams();
   const { removeFromCart } = useCartStore();
+  const { setStartDate, setEndDate, setNumberOfNights, dateRange } =
+    useCartStore();
 
   const dayPicker = watch("dayPicker");
   let from = checkin ? format(checkin, "dd MMM") : format(new Date(), "dd MMM");
@@ -41,10 +40,23 @@ export default function SearchRoomsByHotel({ hotelId }: { hotelId: string }) {
     const params = new URLSearchParams(searchParams);
     if (value[0]) {
       params.set("checkin", format(value[0], "y-MM-dd"));
+      setStartDate(format(value[0], "y-MM-dd"));
+      setEndDate(null);
     }
     if (value[1]) {
       params.set("checkout", format(value[1], "y-MM-dd"));
+      setEndDate(format(value[1], "y-MM-dd"));
     }
+
+    const numberOfNights = differenceInCalendarDays(
+      new Date(value[1]),
+      new Date(value[0])
+    );
+
+    if (numberOfNights > 0) {
+      setNumberOfNights(numberOfNights);
+    }
+
     replace(`${pathname}?${params.toString()}`, { scroll: false });
     removeFromCart();
   };
