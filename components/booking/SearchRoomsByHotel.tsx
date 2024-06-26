@@ -110,14 +110,17 @@ export default function SearchRoomsByHotel({ hotelId }: { hotelId: string }) {
               <TextField
                 select
                 sx={{ bgcolor: "white" }}
-                defaultValue={guests || "1 guest"}
+                value={guests || "1 guest"}
                 fullWidth
                 onChange={(e) => {
                   handleChange(e);
                   onChange();
                 }}
                 SelectProps={{
-                  MenuProps: { disableScrollLock: true, marginThreshold: null },
+                  MenuProps: {
+                    disableScrollLock: true,
+                    marginThreshold: null,
+                  },
                 }}
                 InputProps={{
                   startAdornment: (

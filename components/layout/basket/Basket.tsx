@@ -2,7 +2,7 @@
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Divider from "@mui/material/Divider";
-import { format, differenceInCalendarDays } from "date-fns";
+import { format } from "date-fns";
 import RoomSummary from "./RoomSummary";
 import DateRangeSummary from "./DateRangeSummary";
 import GuestsSummary from "./GuestsSummary";
@@ -12,12 +12,16 @@ import { useUrlParams } from "@/lib/hooks/useUrlParams";
 import { useRoomsStore } from "@/stores/roomsStore";
 
 export default function Basket() {
-  const { room, numberOfNights } = useCartStore();
+  const { room, numberOfNights, dateRange } = useCartStore();
   const { roomType } = useRoomsStore();
-  const { checkin, checkout, guests: numberOfGuests } = useUrlParams();
+  const { guests: numberOfGuests } = useUrlParams();
 
-  const from = checkin ? format(checkin, "dd MMM") : "Checkin";
-  const to = checkout ? format(checkout, "dd MMM") : "Checkin";
+  const from = dateRange.startDate
+    ? format(dateRange.startDate, "dd MMM")
+    : "Checkin";
+  const to = dateRange.endDate
+    ? format(dateRange.endDate, "dd MMM")
+    : "Checkin";
 
   let roomStats = <></>;
   if (room.length !== 0) {

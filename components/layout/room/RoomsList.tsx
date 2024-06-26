@@ -14,7 +14,7 @@ export default function RoomsList() {
   const { setRoomsAndRoomType, roomType, twinRooms, doubleRooms } =
     useRoomsStore();
   const { dateRange, numberOfNights } = useCartStore();
-  const { hotel, checkin, checkout } = useUrlParams();
+  const { hotel } = useUrlParams();
 
   const abortControllerRef = useRef<AbortController | null>(null);
 
@@ -51,8 +51,6 @@ export default function RoomsList() {
       fetchRoomsAndRoomType();
     }
   }, [setRoomsAndRoomType, hotel, dateRange.startDate, dateRange.endDate]);
-
-  console.log(numberOfNights, "number of nights");
 
   const totalStayCostTwin = (roomType[0]?.roomPrice * numberOfNights) / 100;
   const totalStayCostDouble = (roomType[1]?.roomPrice * numberOfNights) / 100;

@@ -8,17 +8,10 @@ import Total from "./Total";
 import { useRoomsStore } from "@/stores/roomsStore";
 import { useCartStore } from "@/stores/cartStore";
 import { useUrlParams } from "@/lib/hooks/useUrlParams";
-import { differenceInCalendarDays } from "date-fns";
 
 export default function MobileBasket() {
-  const { room } = useCartStore();
+  const { room, numberOfNights } = useCartStore();
   const { roomType } = useRoomsStore();
-  const { checkin, checkout } = useUrlParams();
-
-  const numberOfNights = differenceInCalendarDays(
-    new Date(checkout || 0),
-    new Date(checkin || 0)
-  );
 
   let totalStayCost = 0;
   if (room.length !== 0) {
